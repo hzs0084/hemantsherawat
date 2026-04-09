@@ -523,28 +523,38 @@
     SECTION 6: INTERVIEW LOG
     id="interviews" — linked from navbar
 
-    Summary table — each row is one interview.
-    For the full detail pages, see interviews/index.html.
+    This is a PREVIEW TABLE — shows your 3 most recent interviews.
+    Clicking any row navigates to the full detail page.
+    Clicking "view full log →" navigates to interviews/index.html.
 
     To ADD an interview row:
-      1. Copy one <tr> block (and optional takeaway <tr>).
-      2. Update all <td> cells.
-      3. Set the outcome badge class:
+      1. Copy one <tr class="interview-row"> block (+ optional takeaway <tr>).
+      2. Set data-href to the relative path of the detail page,
+         e.g. data-href="./interviews/company-role.html"
+         If the detail page doesn't exist yet, leave it as "#" temporarily.
+      3. Update all <td> cells.
+      4. Set the outcome badge class:
            <span class="status offer">    Offer received
            <span class="status no-offer"> Rejected
            <span class="status pending">  In progress
            <span class="status withdrew"> You withdrew
     The takeaway row is optional — delete it if not needed.
+    Keep this table to your 3–4 most recent/notable interviews.
+    All interviews live in interviews/index.html.
 
     Styles for this section: search "12. INTERVIEW" in styles.css
+    Row click behaviour: see "INTERVIEW ROW CLICKS" in main.js
   ============================================================ -->
   <section id="interviews">
     <div class="section-cmd reveal">
       <div class="cmd-line">
         <span class="cmd-prompt">~$</span>
         <span class="cmd-text">cat interviews.log</span>
+        <!-- "view full log →" — links to the full interviews index page.
+             No changes needed unless you move the interviews folder. -->
+        <a href="./interviews/index.html" class="cmd-view-all">view full log →</a>
       </div>
-      <div class="cmd-comment"># documented interview experiences — the unfiltered journey</div>
+      <div class="cmd-comment"># preview — click any row to read the full breakdown</div>
     </div>
 
     <div class="interview-table-wrap reveal">
@@ -557,58 +567,66 @@
             <th>Stage Reached</th>
             <th>Topics Covered</th>
             <th>Outcome</th>
+            <th></th><!-- arrow column -->
           </tr>
         </thead>
         <tbody>
 
-          <!-- INTERVIEW ROW + TAKEAWAY — copy this pair for each interview -->
-          <tr>
+          <!-- INTERVIEW ROW — copy this block for each entry.
+               data-href: path to the detail page for this interview.
+                          Set to "./interviews/company-role.html"
+                          Use "#" if the page doesn't exist yet. -->
+          <tr class="interview-row" data-href="./interviews/company-role-template.html">
             <td class="td-company">Fortune 500 Fintech</td>
             <td>Security Analyst Intern</td>
             <td>Final Round (4/4)</td>
             <td>Threat modeling, network protocols, Python scripting</td>
             <td><span class="status no-offer">No Offer</span></td>
+            <td class="td-view">read →</td>
           </tr>
           <!-- TAKEAWAY ROW — optional, delete if not needed -->
           <tr class="takeaway-row">
-            <td colspan="5">Learned I needed to sharpen live coding under time pressure. Brushed up on Scapy and socket programming afterward.</td>
+            <td colspan="6">Learned I needed to sharpen live coding under time pressure. Brushed up on Scapy and socket programming afterward.</td>
           </tr>
 
-          <tr>
+          <tr class="interview-row" data-href="./interviews/company-role-template.html">
             <td class="td-company">Defense Contractor</td>
             <td>Penetration Tester Intern</td>
             <td>Round 2 (2/3)</td>
             <td>Enumeration techniques, report writing, OSINT</td>
             <td><span class="status no-offer">No Offer</span></td>
+            <td class="td-view">read →</td>
           </tr>
           <tr class="takeaway-row">
-            <td colspan="5">Reporting and documentation skills matter just as much as technical skills. Practiced writing professional pentest reports.</td>
+            <td colspan="6">Reporting and documentation skills matter just as much as technical skills. Practiced writing professional pentest reports.</td>
           </tr>
 
-          <tr>
+          <tr class="interview-row" data-href="./interviews/company-role-template.html">
             <td class="td-company">Series B SaaS Startup</td>
             <td>AppSec Engineer</td>
             <td>Final Round (3/3)</td>
             <td>OWASP Top 10, code review, SDLC security</td>
             <td><span class="status offer">Offer</span></td>
+            <td class="td-view">read →</td>
           </tr>
           <tr class="takeaway-row">
-            <td colspan="5">Being able to explain vulnerability impact to non-technical stakeholders was the differentiator in the final round.</td>
-          </tr>
-
-          <tr>
-            <td class="td-company">Company Name Here</td>
-            <td>Role Title Here</td>
-            <td>Stage Reached</td>
-            <td>Topics you were asked about</td>
-            <td><span class="status pending">In Progress</span></td>
+            <td colspan="6">Being able to explain vulnerability impact to non-technical stakeholders was the differentiator in the final round.</td>
           </tr>
 
           <!-- ADD MORE INTERVIEW ROWS ABOVE THIS LINE -->
+          <!-- Remember: keep this to 3–4 previews. Full list → interviews/index.html -->
 
         </tbody>
       </table>
     </div><!-- end .interview-table-wrap -->
+
+    <!-- "View full log" footer link — also links to interviews/index.html -->
+    <div class="interviews-footer reveal">
+      <a href="./interviews/index.html" class="interviews-view-all">
+        $ ls interviews/ &nbsp;·&nbsp; view all interviews →
+      </a>
+    </div>
+
   </section>
 
 
@@ -667,6 +685,6 @@
       - Add any new interactive behavior
   ============================================================ -->
   <script src="main.js"></script>
-
+  
 </body>
 </html>

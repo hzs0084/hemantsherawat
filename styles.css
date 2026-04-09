@@ -551,6 +551,59 @@ section:last-of-type { border-bottom: none; }
 
 
 /* ----------------------------------------------------------------
+   12b. INTERVIEW SECTION — NAVIGATION LINKS
+
+   .cmd-view-all — "view full log →" link inline with the $ command.
+     Sits on the right side of the .cmd-line row.
+     To remove it: delete the <a class="cmd-view-all"> in index.html.
+
+   .interviews-footer / .interviews-view-all — the link below the
+     preview table that takes visitors to interviews/index.html.
+     To remove it: delete the <div class="interviews-footer"> in index.html.
+---------------------------------------------------------------- */
+/* Pushes the link to the far right of the cmd-line row */
+.cmd-view-all {
+  margin-left: auto;
+  font-size: 11px;
+  color: var(--text-dim);
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  transition: color 0.2s;
+}
+.cmd-view-all:hover { color: var(--accent); }
+
+/* Centered "view all" link below the preview table */
+.interviews-footer { margin-top: 24px; text-align: center; }
+.interviews-view-all {
+  font-family: var(--font);
+  font-size: 11px;
+  color: var(--text-dim);
+  text-decoration: none;
+  border: 0.5px solid var(--border);
+  padding: 8px 20px;
+  border-radius: 4px;
+  display: inline-block;
+  transition: all 0.2s;
+}
+.interviews-view-all:hover {
+  border-color: var(--border-accent);
+  color: var(--accent);
+}
+
+/* Clickable row styles — cursor + hover + "read →" hint */
+.interview-row { cursor: pointer; transition: background 0.15s; }
+.interview-row:hover td { background: var(--bg-hover); }
+.interview-row:hover .td-company { color: var(--accent); }
+.td-view {
+  font-size: 10px;
+  color: var(--text-dim);
+  white-space: nowrap;
+  transition: color 0.2s;
+}
+.interview-row:hover .td-view { color: var(--accent); }
+
+
+/* ----------------------------------------------------------------
    13. CONTACT SECTION (#contact)
 
    .contact-chip — each link button (LinkedIn, GitHub, etc.)

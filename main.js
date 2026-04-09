@@ -6,7 +6,8 @@
    TABLE OF CONTENTS
    -----------------
    1. Scroll Reveal
-   2. Footer Year
+   2. Interview Row Clicks
+   3. Footer Year
 
    ================================================================ */
 
@@ -43,7 +44,33 @@ document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
 
 /* ----------------------------------------------------------------
-   2. FOOTER YEAR
+   2. INTERVIEW ROW CLICKS
+   Makes each <tr class="interview-row"> in index.html clickable.
+   Reads the data-href attribute and navigates to the detail page.
+
+   HOW TO WIRE UP A ROW TO A PAGE:
+     In index.html, set data-href on the <tr>:
+       <tr class="interview-row" data-href="./interviews/company-role.html">
+     The value must be the relative path from index.html to the file.
+     Use "#" as a placeholder while the detail page doesn't exist yet —
+     clicking will do nothing until you replace it with a real path.
+
+   HOW TO MAKE ONE ROW NON-CLICKABLE:
+     Remove the data-href attribute from that <tr> entirely.
+---------------------------------------------------------------- */
+document.querySelectorAll('.interview-row').forEach(row => {
+  row.addEventListener('click', () => {
+    const href = row.dataset.href;
+    // Skip rows where href is missing or still a "#" placeholder
+    if (href && href !== '#') {
+      window.location.href = href;
+    }
+  });
+});
+
+
+/* ----------------------------------------------------------------
+   3. FOOTER YEAR
    Automatically inserts the current year into the footer so
    you never need to manually update it.
 
