@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- ============================================================
+    PAGE TITLE
+    Format: "Company · Role · Hemant Sherawat"
+    Update both the company and role each time you copy this file.
+    Example: <title>Google · Security Engineer · Hemant Sherawat</title>
+  ============================================================ -->
+  <title>Company Name · Role Title · Hemant Sherawat</title>
+
+  <!-- ============================================================
+    OG META TAGS — for Medium cross-posting and social sharing
+    When you eventually post this on Medium or share the link,
+    these tags control the preview card (title, description, image).
+
+    og:title       → the headline of the article
+    og:description → 1–2 sentence summary
+    og:url         → full URL of this page on your domain
+    og:image       → optional: a banner image (1200×630px recommended)
+                     You can leave og:image out if you don't have one.
+  ============================================================ -->
+  <meta property="og:title"       content="Interview at Company Name — What They Actually Asked" />
+  <meta property="og:description" content="A full breakdown of the interview process, questions asked, and what I learned." />
+  <meta property="og:url"         content="https://hemantsherawat.com/interviews/company-role.html" />
+  <meta property="og:type"        content="article" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <!-- Two fonts: JetBrains Mono for code/terminal elements, Lora for readable long-form body text -->
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ============================================================
+      THEME
+      Slightly lighter than the main portfolio — optimized for
+      long-form reading while keeping the terminal identity.
+
+      --bg:       slightly lighter than pure black for eye comfort
+      --prose:    warm off-white for body text readability
+      --accent:   same green as portfolio for visual continuity
+    ============================================================ */
+    :root {
+      --accent:          #00ff88;
+      --accent-dim:      #00cc6a;
+      --bg:              #0f0f0f;
+      --bg-card:         #141414;
+      --bg-code:         #0d0d0d;
+      --bg-accent-faint: #061a0f;
+      --border:          #222;
+      --border-accent:   #1a3d2b;
+      --text:            #e2e2e2;
+      --prose:           #c8c8c8;   /* body text — softer than pure white */
+      --text-muted:      #888;
+      --text-dim:        #444;
+      --red:             #cc6655;
+      --red-bg:          #1a0a08;
+      --red-border:      #3d1a14;
+      --yellow:          #ccaa44;
+      --yellow-bg:       #1a1608;
+      --yellow-border:   #3d3014;
+      --mono:            'JetBrains Mono', monospace;
+      --serif:           'Lora', Georgia, serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--serif); background: var(--bg); color: var(--prose); font-size: 16px; line-height: 1.8; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 3px; }
+
+    @keyframes blink { 0%,100%{opacity:1}50%{opacity:0} }
+    .cursor { display:inline-block; width:8px; height:14px; background:var(--accent); animation:blink 1s step-end infinite; vertical-align:text-bottom; margin-left:2px; }
+
+    /* ---- NAV ---- */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(15,15,15,0.94); backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 32px;
+      display: flex; align-items: center; justify-content: space-between;
+      font-family: var(--mono);
+    }
+    .nav-brand { font-size: 13px; color: var(--accent); font-weight: 500; }
+    .nav-back { font-size: 11px; color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+    .nav-back:hover { color: var(--accent); }
+
+    /* ---- READING PROGRESS BAR ---- */
+    /* Thin green bar at the top that fills as you scroll down the page.
+       Driven by JS at the bottom. No changes needed. */
+    .progress-bar {
+      position: fixed; top: 0; left: 0; z-index: 200;
+      height: 2px; width: 0%;
+      background: var(--accent);
+      transition: width 0.1s linear;
+    }
+
+    /* ---- LAYOUT ---- */
+    /* max-width: 680px is optimal for long-form reading (65–75 chars/line).
+       Increase to 760px if you want slightly wider paragraphs. */
+    .page { max-width: 680px; margin: 0 auto; padding: 64px 32px 96px; }
+
+    /* ---- ARTICLE HEADER ---- */
+    .article-header { margin-bottom: 48px; }
+
+    /* Breadcrumb: "interviews / company-role" */
+    .breadcrumb {
+      font-family: var(--mono);
+      font-size: 11px; color: var(--text-dim);
+      margin-bottom: 20px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .breadcrumb a { color: var(--text-dim); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--accent); }
+
+    /* ============================================================
+      ARTICLE TITLE
+      Update this with the company and role name.
+      Keep it clear and specific — this doubles as your Medium headline.
+      Good: "My Final-Round Interview at Palo Alto Networks — Full Breakdown"
+      OK:   "Palo Alto Networks · Security Engineer Intern"
+    ============================================================ -->
+    */
+    .article-title {
+      font-family: var(--serif);
+      font-size: 28px; font-weight: 600;
+      color: #fff; line-height: 1.3;
+      margin-bottom: 12px;
+    }
+
+    /* ============================================================
+      META ROW — date, outcome, reading time
+      Update: data-date, outcome badge class, and est. read time.
+      outcome classes: .meta-offer | .meta-no-offer | .meta-pending | .meta-withdrew
+    ============================================================ -->
+    */
+    .meta-row {
+      font-family: var(--mono);
+      font-size: 11px; color: var(--text-dim);
+      display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+    .meta-date  { color: var(--text-dim); }
+    .meta-badge {
+      padding: 2px 8px; border-radius: 2px; font-size: 10px; font-weight: 500;
+    }
+    .meta-offer    { color: var(--accent);   background: var(--bg-accent-faint); border: 0.5px solid var(--border-accent); }
+    .meta-no-offer { color: var(--red);      background: var(--red-bg);          border: 0.5px solid var(--red-border); }
+    .meta-pending  { color: var(--yellow);   background: var(--yellow-bg);       border: 0.5px solid var(--yellow-border); }
+    .meta-withdrew { color: var(--text-dim); background: #111;                   border: 0.5px solid var(--border); }
+    .meta-readtime { color: var(--text-dim); }
+
+    /* ============================================================
+      COMPANY INFO CARD
+      A quick-glance card at the top of every interview page.
+      Update each .info-row with real details about the company/role.
+      To add a row: copy one .info-row block.
+      To remove a row: delete it.
+    ============================================================ -->
+    */
+    .info-card {
+      font-family: var(--mono);
+      background: var(--bg-card);
+      border: 0.5px solid var(--border);
+      border-left: 2px solid var(--border-accent);
+      border-radius: 6px;
+      padding: 18px 20px;
+      margin-bottom: 48px;
+    }
+    .info-card-title {
+      font-size: 10px; color: var(--text-dim);
+      letter-spacing: 0.1em; text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .info-grid { display: grid; grid-template-columns: auto 1fr; gap: 6px 20px; }
+    .info-key { font-size: 11px; color: var(--accent-dim); white-space: nowrap; }
+    .info-val { font-size: 11px; color: var(--text-muted); }
+
+    /* ---- PROSE CONTENT ---- */
+    /* All long-form text uses these styles.
+       h2 = major section headers (Overview, Process, Questions, etc.)
+       h3 = sub-sections (Round 1, Round 2, etc.)
+       p  = body paragraphs
+    */
+    .prose h2 {
+      font-family: var(--mono);
+      font-size: 13px; font-weight: 500;
+      color: var(--accent);
+      letter-spacing: 0.05em;
+      margin: 48px 0 16px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .prose h2::before { content: '##'; color: var(--text-dim); font-size: 12px; }
+
+    .prose h3 {
+      font-family: var(--mono);
+      font-size: 12px; color: var(--text-muted);
+      margin: 28px 0 10px;
+    }
+    .prose h3::before { content: '###'; color: var(--text-dim); font-size: 11px; margin-right: 8px; }
+
+    .prose p { margin-bottom: 20px; }
+
+    .prose ul, .prose ol {
+      margin: 0 0 20px 20px;
+    }
+    .prose li { margin-bottom: 8px; }
+
+    /* ============================================================
+      QUESTION BLOCK
+      Use this for quoting verbatim questions from your transcripts.
+      Each question gets its own .question-block.
+
+      Structure:
+        .q-label  → "Q" indicator (auto-styled, no changes needed)
+        .q-text   → the exact question as asked
+        .q-answer → your reflection / how you answered
+
+      To add a question: copy one .question-block and update the text.
+      To remove: delete the block.
+    ============================================================ -->
+    */
+    .question-block {
+      background: var(--bg-card);
+      border: 0.5px solid var(--border);
+      border-radius: 8px;
+      padding: 20px 22px;
+      margin: 24px 0;
+    }
+    .q-header {
+      display: flex; align-items: flex-start; gap: 12px;
+      margin-bottom: 12px;
+    }
+    .q-label {
+      font-family: var(--mono);
+      font-size: 10px; font-weight: 500;
+      color: var(--accent); background: var(--bg-accent-faint);
+      border: 0.5px solid var(--border-accent);
+      padding: 2px 7px; border-radius: 2px;
+      white-space: nowrap; margin-top: 2px;
+    }
+    /* The verbatim question text */
+    .q-text {
+      font-family: var(--serif);
+      font-size: 15px; font-style: italic;
+      color: var(--text); line-height: 1.6;
+    }
+    /* Divider between question and your answer */
+    .q-divider {
+      height: 0.5px; background: var(--border);
+      margin: 14px 0;
+    }
+    .q-answer-label {
+      font-family: var(--mono);
+      font-size: 10px; color: var(--text-dim);
+      letter-spacing: 0.08em; text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    /* Your reflection / how you answered */
+    .q-answer {
+      font-size: 14px; color: var(--prose); line-height: 1.7;
+    }
+
+    /* ============================================================
+      ROUND CARD
+      A summary card for each interview round.
+      Shows: round number, format, duration, and a brief description.
+
+      To add a round: copy one .round-card block.
+      To remove: delete the block.
+    ============================================================ -->
+    */
+    .round-card {
+      font-family: var(--mono);
+      background: var(--bg-card);
+      border: 0.5px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 18px;
+      margin: 16px 0;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 0 16px;
+    }
+    .round-number {
+      font-size: 20px; font-weight: 700;
+      color: var(--border); /* dim by default */
+      grid-row: span 3;
+      display: flex; align-items: center;
+      padding-right: 16px;
+      border-right: 0.5px solid var(--border);
+    }
+    .round-title { font-size: 13px; color: var(--text); margin-bottom: 4px; }
+    .round-meta  { font-size: 10px; color: var(--text-dim); margin-bottom: 8px; }
+    .round-desc  { font-size: 11px; color: var(--text-muted); line-height: 1.6; grid-column: 2; }
+
+    /* ============================================================
+      TAKEAWAY BOX
+      A highlighted summary box at the end.
+      Use it for the key lessons — this is the part people share.
+
+      To add a takeaway: copy one <li> inside .takeaway-list.
+      To remove: delete the <li>.
+    ============================================================ -->
+    */
+    .takeaway-box {
+      background: var(--bg-accent-faint);
+      border: 0.5px solid var(--border-accent);
+      border-radius: 8px;
+      padding: 22px 24px;
+      margin: 32px 0;
+    }
+    .takeaway-title {
+      font-family: var(--mono);
+      font-size: 11px; color: var(--accent-dim);
+      letter-spacing: 0.08em; text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+    .takeaway-list { list-style: none; margin: 0; }
+    .takeaway-list li {
+      font-size: 14px; color: var(--prose);
+      padding: 6px 0;
+      border-bottom: 0.5px solid var(--border-accent);
+      display: flex; align-items: flex-start; gap: 10px;
+    }
+    .takeaway-list li:last-child { border-bottom: none; }
+    .takeaway-list li::before { content: '→'; color: var(--accent); font-family: var(--mono); flex-shrink: 0; }
+
+    /* ============================================================
+      RESOURCES SECTION
+      Books, courses, HTB machines, blogs that were relevant.
+      Each resource = one .resource-link <a> tag.
+
+      To add: copy one <a class="resource-link"> block.
+      To remove: delete the block.
+    ============================================================ -->
+    */
+    .resources-grid { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; }
+    .resource-link {
+      font-family: var(--mono);
+      font-size: 12px; color: var(--text-muted);
+      text-decoration: none;
+      background: var(--bg-card);
+      border: 0.5px solid var(--border);
+      border-radius: 6px;
+      padding: 10px 14px;
+      display: flex; align-items: center; justify-content: space-between;
+      transition: all 0.2s;
+    }
+    .resource-link:hover { border-color: var(--border-accent); color: var(--accent); }
+    .resource-link span { font-size: 10px; color: var(--text-dim); }
+
+    /* ---- MEDIUM CTA ---- */
+    /* Optional block to link to the published Medium article.
+       Uncomment and update the href once you post it.
+       Currently hidden — set display:block to show. */
+    .medium-cta {
+      display: none; /* change to block once you publish on Medium */
+      background: var(--bg-card);
+      border: 0.5px solid var(--border);
+      border-radius: 8px;
+      padding: 18px 20px;
+      margin-top: 40px;
+      font-family: var(--mono);
+      font-size: 12px;
+      text-align: center;
+    }
+    .medium-cta a { color: var(--accent); text-decoration: none; }
+    .medium-cta a:hover { text-decoration: underline; }
+
+    /* ---- ARTICLE FOOTER / NAVIGATION ---- */
+    .article-nav {
+      display: flex; justify-content: space-between;
+      margin-top: 64px; padding-top: 24px;
+      border-top: 1px solid var(--border);
+      font-family: var(--mono); font-size: 11px;
+    }
+    .article-nav a { color: var(--text-dim); text-decoration: none; transition: color 0.2s; }
+    .article-nav a:hover { color: var(--accent); }
+
+    @media (max-width: 600px) {
+      nav { padding: 10px 16px; }
+      .page { padding: 40px 16px 64px; }
+      .article-title { font-size: 22px; }
+      .round-card { grid-template-columns: 1fr; }
+      .round-number { grid-row: span 1; border-right: none; border-bottom: 0.5px solid var(--border); padding-bottom: 8px; margin-bottom: 8px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Reading progress bar — fills as you scroll -->
+  <div class="progress-bar" id="progress"></div>
+
+  <!-- ============================================================
+    NAVBAR
+    Update the terminal path to reflect company + role.
+    Example: hemant@portfolio:~/interviews/google-swe
+    .nav-back links back to the interview log index.
+  ============================================================ -->
+  <nav>
+    <div class="nav-brand">hemant@portfolio:~/interviews/company-role<span class="cursor"></span></div>
+    <a href="./index.html" class="nav-back">← all interviews</a>
+  </nav>
+
+  <div class="page">
+
+    <!-- ============================================================
+      ARTICLE HEADER
+      Update: breadcrumb, title, meta badge, and company info card.
+    ============================================================ -->
+    <header class="article-header">
+
+      <!-- Breadcrumb — update the last item to match company/role -->
+      <div class="breadcrumb">
+        <a href="../index.html">portfolio</a>
+        <span>/</span>
+        <a href="./index.html">interviews</a>
+        <span>/</span>
+        <span>company-role</span>  <!-- e.g. google-security-engineer -->
+      </div>
+
+      <!-- ============================================================
+        ARTICLE TITLE
+        Be specific. Good titles get shared.
+        Examples:
+          "How I Failed My Final Round at [Company] — And What I Learned"
+          "Getting an Offer from [Company]: The Full Interview Breakdown"
+          "[Company] Security Analyst Intern — Round-by-Round Recap"
+      ============================================================ -->
+      <h1 class="article-title">
+        Company Name — Role Title: The Full Interview Breakdown
+      </h1>
+
+      <!-- META ROW — update date, badge class, and read time -->
+      <div class="meta-row">
+        <span class="meta-date">Month Year</span>
+        <!-- Use one badge: meta-offer | meta-no-offer | meta-pending | meta-withdrew -->
+        <span class="meta-badge meta-no-offer">No Offer</span>
+        <span class="meta-readtime">~ 5 min read</span>
+      </div>
+
+      <!-- ============================================================
+        COMPANY INFO CARD
+        Quick facts a reader (or future you) can scan in 10 seconds.
+        Update every .info-val field.
+        To add a row: copy one pair of .info-key + .info-val divs.
+        To remove a row: delete the pair.
+      ============================================================ -->
+      <div class="info-card">
+        <div class="info-card-title">// interview snapshot</div>
+        <div class="info-grid">
+          <div class="info-key">Company</div>
+          <div class="info-val">Company Full Name</div>
+
+          <div class="info-key">Role</div>
+          <div class="info-val">Job Title</div>
+
+          <div class="info-key">Date</div>
+          <div class="info-val">Month Year</div>
+
+          <div class="info-key">Rounds</div>
+          <div class="info-val">3 rounds (phone screen → technical → final)</div>
+
+          <div class="info-key">Format</div>
+          <!-- e.g. Video call (Zoom), On-site, Phone, HackerRank + Video -->
+          <div class="info-val">Video call (Zoom)</div>
+
+          <div class="info-key">Duration</div>
+          <!-- Total time from application to final decision -->
+          <div class="info-val">3 weeks from application to decision</div>
+
+          <div class="info-key">Outcome</div>
+          <!-- Repeat the outcome here in plain text -->
+          <div class="info-val" style="color: var(--red);">No offer — rejected after final round</div>
+
+          <!-- Add more rows here if needed, e.g. Recruiter, Team, Compensation discussed -->
+        </div>
+      </div>
+
+    </header><!-- end .article-header -->
+
+
+    <!-- ============================================================
+      ARTICLE BODY
+      All sections below are inside .prose for consistent styling.
+
+      SECTIONS:
+        1. Overview       — why you applied, what the company does
+        2. The Process    — round-by-round summary cards
+        3. Questions      — verbatim questions + your reflection
+        4. What I'd Do Differently
+        5. Key Takeaways  — the highlighted box
+        6. Resources      — links that helped
+
+      To add a new major section: add an <h2> tag.
+      To add a sub-section within a round: add an <h3> tag.
+      To remove a section: delete the block between two <h2> tags.
+    ============================================================ -->
+    <article class="prose">
+
+      <!-- ======================================================
+        SECTION: OVERVIEW
+        Why did you apply? What does this company do?
+        What drew you to this specific role?
+        Keep it personal — this isn't a company Wikipedia page.
+        2–4 paragraphs is ideal.
+      ====================================================== -->
+      <h2>Overview</h2>
+
+      <p>
+        Write a paragraph about why you applied to this company and role.
+        What interested you? What did you know about their security team?
+        This sets context for anyone reading your breakdown.
+      </p>
+
+      <p>
+        What was your application process like? Did you get a recruiter
+        cold message, apply online, get a referral? That context matters
+        and makes the story more real.
+      </p>
+
+
+      <!-- ======================================================
+        SECTION: THE PROCESS
+        A round-by-round breakdown using .round-card components.
+
+        To add a round: copy one .round-card block and update:
+          .round-number → "01", "02", "03" etc.
+          .round-title  → e.g. "Recruiter Phone Screen"
+          .round-meta   → format, duration, interviewer if known
+          .round-desc   → what happened, tone, main focus areas
+
+        To remove a round: delete the block.
+      ====================================================== -->
+      <h2>The Process</h2>
+
+      <!-- ROUND CARD — copy this block for each round -->
+      <div class="round-card">
+        <div class="round-number">01</div>
+        <div class="round-title">Recruiter Phone Screen</div>
+        <div class="round-meta">30 min · Phone · HR/Recruiter</div>
+        <div class="round-desc">
+          Describe what happened in this round. What was the tone?
+          What broad topics came up? How long did it last?
+          Was it behavioral, technical, or a mix?
+        </div>
+      </div>
+
+      <div class="round-card">
+        <div class="round-number">02</div>
+        <div class="round-title">Technical Screen</div>
+        <div class="round-meta">60 min · Zoom · Security Engineer</div>
+        <div class="round-desc">
+          What was the technical format? Live coding? Whiteboard?
+          Verbal Q&A? Walk through a CVE? Describe the structure
+          and the general topics covered.
+        </div>
+      </div>
+
+      <div class="round-card">
+        <div class="round-number">03</div>
+        <div class="round-title">Final Round — Panel</div>
+        <div class="round-meta">90 min · Zoom · 3 interviewers</div>
+        <div class="round-desc">
+          Who was in the room (roles, not names)? What did each
+          person focus on? How did the vibe feel?
+        </div>
+      </div>
+
+      <!-- Add more round cards here if needed -->
+
+
+      <!-- ======================================================
+        SECTION: QUESTIONS ASKED
+        Verbatim questions from your chat transcripts + your reflection.
+
+        To add a question: copy one .question-block block.
+        To remove: delete the block.
+
+        .q-text   → the exact question as it was asked
+        .q-answer → your honest reflection — how you answered,
+                    what the ideal answer would have been,
+                    what you wish you'd said differently.
+
+        Group questions by round using <h3> sub-headers.
+        You don't need to include every single question —
+        focus on the most interesting, tricky, or educational ones.
+      ====================================================== -->
+      <h2>Questions Asked</h2>
+
+      <h3>Round 1 — Phone Screen</h3>
+
+      <!-- QUESTION BLOCK — copy this block for each question -->
+      <div class="question-block">
+        <div class="q-header">
+          <span class="q-label">Q</span>
+          <!-- Paste the verbatim question from your transcript here -->
+          <p class="q-text">
+            "Tell me about yourself and why you're interested in
+            cybersecurity specifically."
+          </p>
+        </div>
+        <div class="q-divider"></div>
+        <div class="q-answer-label">my answer & reflection</div>
+        <div class="q-answer">
+          Write how you actually answered this, and your honest
+          reflection on it. Did you nail it? What would you change?
+          What's the "right" structure for answering this question?
+          This is the most valuable part for anyone reading.
+        </div>
+      </div>
+
+      <!-- Another question in the same round -->
+      <div class="question-block">
+        <div class="q-header">
+          <span class="q-label">Q</span>
+          <p class="q-text">
+            "Walk me through a security incident you've investigated
+            or simulated. What steps did you take?"
+          </p>
+        </div>
+        <div class="q-divider"></div>
+        <div class="q-answer-label">my answer & reflection</div>
+        <div class="q-answer">
+          Your reflection here. Reference specific frameworks if relevant
+          (e.g. MITRE ATT&CK, NIST IR lifecycle).
+          Be honest about gaps in your answer — that's what makes this
+          useful to others preparing for similar roles.
+        </div>
+      </div>
+
+      <h3>Round 2 — Technical Screen</h3>
+
+      <div class="question-block">
+        <div class="q-header">
+          <span class="q-label">Q</span>
+          <p class="q-text">
+            "If you found an open S3 bucket in a penetration test,
+            walk me through everything you'd document in your report."
+          </p>
+        </div>
+        <div class="q-divider"></div>
+        <div class="q-answer-label">my answer & reflection</div>
+        <div class="q-answer">
+          What you said. What you'd say now. What the ideal structure
+          of a pentest finding looks like (title, CVSS score, description,
+          impact, evidence, remediation).
+        </div>
+      </div>
+
+      <!-- ADD MORE QUESTION BLOCKS HERE -->
+      <!-- Copy the .question-block structure above for each new question -->
+
+
+      <!-- ======================================================
+        SECTION: WHAT I'D DO DIFFERENTLY
+        Raw, honest retrospective. No spin.
+        This is often the most-read section.
+        Write 2–4 paragraphs or a short list.
+      ====================================================== -->
+      <h2>What I'd Do Differently</h2>
+
+      <p>
+        Write your honest retrospective here. What did you miss?
+        What technical gaps did this interview expose?
+        What would you prepare differently if you could go back?
+      </p>
+
+      <p>
+        Specifics are better than vague regrets. Instead of
+        "I'd study more," say "I'd drill OWASP Top 10 with
+        hands-on PortSwigger labs instead of just reading the list."
+      </p>
+
+
+      <!-- ======================================================
+        SECTION: KEY TAKEAWAYS
+        The highlighted box. 3–5 bullet lessons.
+        These should be actionable and specific — not generic.
+        Think: what would you tell a friend preparing for this exact role?
+
+        To add a takeaway: copy one <li> inside .takeaway-list.
+        To remove: delete the <li>.
+      ====================================================== -->
+      <h2>Key Takeaways</h2>
+
+      <div class="takeaway-box">
+        <div class="takeaway-title">// lessons learned</div>
+        <ul class="takeaway-list">
+          <!-- Each <li> is one lesson. Keep them specific and actionable. -->
+          <li>Write a specific, actionable lesson here — not "prepare more."</li>
+          <li>Another concrete takeaway. What did this interview teach you about the role or company?</li>
+          <li>A technical gap this process exposed and how you addressed it afterward.</li>
+          <li>Something about the interview format or process itself that surprised you.</li>
+          <!-- ADD MORE TAKEAWAYS HERE -->
+        </ul>
+      </div>
+
+
+      <!-- ======================================================
+        SECTION: RESOURCES THAT HELPED (or would have helped)
+        Link to specific resources — HTB machines, TryHackMe rooms,
+        books, YouTube videos, courses, blog posts.
+        Be specific: not "study networking" but link to an actual resource.
+
+        To add: copy one .resource-link <a> block.
+          - href: URL of the resource
+          - Left text: resource name
+          - <span> right text: type/category label
+
+        To remove: delete the <a> block.
+      ====================================================== -->
+      <h2>Resources That Helped</h2>
+
+      <div class="resources-grid">
+
+        <!-- RESOURCE LINK — copy this block for each resource -->
+        <a href="https://portswigger.net/web-security" target="_blank" class="resource-link">
+          PortSwigger Web Security Academy
+          <span>hands-on labs</span>
+        </a>
+
+        <a href="https://tryhackme.com" target="_blank" class="resource-link">
+          TryHackMe — SOC Level 1 Path
+          <span>defensive skills</span>
+        </a>
+
+        <a href="https://app.hackthebox.com" target="_blank" class="resource-link">
+          HackTheBox — [Specific Machine Name]
+          <span>offensive practice</span>
+        </a>
+
+        <!-- Add more resources specific to this interview's topics -->
+
+      </div><!-- end .resources-grid -->
+
+    </article><!-- end .prose -->
+
+
+    <!-- ============================================================
+      MEDIUM CTA
+      Hidden by default (display: none in CSS).
+      Once you post this on Medium:
+        1. Change display:none to display:block in CSS (or inline below)
+        2. Update the href to your Medium article URL
+    ============================================================ -->
+    <div class="medium-cta">
+      Also published on Medium →
+      <a href="https://medium.com/@YOUR_HANDLE/article-slug" target="_blank">
+        Read on Medium
+      </a>
+    </div>
+
+
+    <!-- ============================================================
+      ARTICLE NAVIGATION
+      Links to the previous and next interview pages.
+      Update both hrefs and labels each time.
+      If there's no prev/next, remove that <a> and replace with <span>.
+    ============================================================ -->
+    <nav class="article-nav">
+      <!-- Previous interview — update href and label -->
+      <a href="./previous-interview.html">← Previous interview</a>
+
+      <!-- Link back to the full log -->
+      <a href="./index.html">all interviews →</a>
+    </nav>
+
+  </div><!-- end .page -->
+
+
+  <script>
+    // ---- READING PROGRESS BAR ----
+    // Updates the width of the progress bar as you scroll.
+    // No changes needed.
+    const bar = document.getElementById('progress');
+    window.addEventListener('scroll', () => {
+      const scrolled = window.scrollY;
+      const total = document.body.scrollHeight - window.innerHeight;
+      bar.style.width = (scrolled / total * 100) + '%';
+    });
+  </script>
+
+</body>
+</html>

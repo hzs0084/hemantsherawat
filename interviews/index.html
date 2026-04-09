@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- ============================================================
+    PAGE TITLE — update your name
+  ============================================================ -->
+  <title>Interview Log · Hemant Sherawat</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ============================================================
+      THEME — matches the main portfolio exactly.
+      Change colors here if you update the portfolio theme.
+    ============================================================ */
+    :root {
+      --accent:          #00ff88;
+      --accent-dim:      #00cc6a;
+      --bg:              #080808;
+      --bg-card:         #0d0d0d;
+      --bg-hover:        #111;
+      --bg-accent-faint: #061a0f;
+      --border:          #1e1e1e;
+      --border-accent:   #1a3d2b;
+      --text:            #e8e8e8;
+      --text-muted:      #888;
+      --text-dim:        #444;
+      --red:             #cc6655;
+      --red-bg:          #1a0a08;
+      --red-border:      #3d1a14;
+      --yellow:          #ccaa44;
+      --yellow-bg:       #1a1608;
+      --yellow-border:   #3d3014;
+      --font:            'JetBrains Mono', monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font); background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.6; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: #222; border-radius: 3px; }
+
+    @keyframes blink { 0%,100%{opacity:1}50%{opacity:0} }
+    .cursor { display:inline-block; width:8px; height:14px; background:var(--accent); animation:blink 1s step-end infinite; vertical-align:text-bottom; margin-left:2px; }
+
+    /* ---- NAV ---- */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(8,8,8,0.92); backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 32px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-brand { font-size: 13px; color: var(--accent); font-weight: 500; }
+    .nav-back { font-size: 11px; color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+    .nav-back:hover { color: var(--accent); }
+
+    /* ---- PAGE WRAPPER ---- */
+    .page { max-width: 900px; margin: 0 auto; padding: 64px 32px; }
+
+    /* ---- HEADER ---- */
+    .page-header { margin-bottom: 48px; }
+    .cmd-line { display:flex; align-items:center; gap:8px; margin-bottom:6px; }
+    .cmd-prompt { color: var(--text-dim); font-size: 13px; }
+    .cmd-text { color: var(--accent); font-size: 18px; font-weight: 500; }
+    .cmd-comment { font-size: 11px; color: var(--text-dim); font-style: italic; margin-bottom: 24px; }
+
+    /* ---- STATS ROW ---- */
+    /* Quick summary numbers at the top of the log.
+       To update: change the number inside each .stat-number.
+       To add a stat: copy one .stat-item block. */
+    .stats-row {
+      display: flex; gap: 24px; flex-wrap: wrap;
+      margin-bottom: 40px;
+      padding: 20px 24px;
+      background: var(--bg-card);
+      border: 0.5px solid var(--border);
+      border-radius: 8px;
+    }
+    .stat-item { display: flex; flex-direction: column; gap: 4px; }
+    .stat-number { font-size: 22px; font-weight: 700; color: var(--accent); }
+    .stat-label { font-size: 10px; color: var(--text-dim); letter-spacing: 0.08em; text-transform: uppercase; }
+
+    /* ---- FILTER TABS ---- */
+    /* Clicking a tab filters the table by outcome.
+       No changes needed — driven by JS at the bottom. */
+    .filter-row { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+    .filter-btn {
+      font-family: var(--font); font-size: 11px;
+      padding: 5px 14px; border-radius: 3px; cursor: pointer;
+      border: 0.5px solid var(--border); background: transparent;
+      color: var(--text-muted); transition: all 0.2s;
+    }
+    .filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .filter-btn.active { background: var(--bg-accent-faint); border-color: var(--border-accent); color: var(--accent); }
+
+    /* ---- INTERVIEW TABLE ---- */
+    /* Each <tr class="interview-row"> is one interview entry.
+       Clicking the row navigates to the detail page via data-href.
+
+       To ADD an interview row:
+         1. Copy one <tr class="interview-row"> block in the HTML below
+         2. Set data-href="./company-role.html" — this is the detail page
+            the row links to. Create the detail page from the template.
+         3. Set data-outcome to one of: offer | no-offer | pending | withdrew
+            This value is used by the filter buttons.
+         4. Update all <td> cells.
+
+       To REMOVE a row: delete the entire <tr> block.
+    ============================================================ */
+    .table-wrap { overflow-x: auto; }
+    .interview-table {
+      width: 100%; border-collapse: collapse; font-size: 12px;
+    }
+    .interview-table thead tr { border-bottom: 0.5px solid var(--border); }
+    .interview-table th {
+      text-align: left; padding: 8px 14px;
+      font-size: 10px; color: var(--text-dim);
+      letter-spacing: 0.08em; text-transform: uppercase; font-weight: 400;
+    }
+    .interview-table td {
+      padding: 12px 14px;
+      color: var(--text-muted);
+      border-bottom: 0.5px solid #111;
+      vertical-align: middle;
+    }
+
+    /* Clickable row styling */
+    .interview-row { cursor: pointer; transition: background 0.15s; }
+    .interview-row:hover td { background: var(--bg-hover); }
+    .interview-row:hover .td-company { color: var(--accent); }
+    .interview-row td:last-child { white-space: nowrap; }
+
+    /* Company name column — brighter */
+    .td-company { color: var(--text) !important; font-weight: 500; }
+
+    /* "View →" link hint that appears on row hover */
+    .td-view {
+      font-size: 10px;
+      color: var(--text-dim);
+      transition: color 0.2s;
+    }
+    .interview-row:hover .td-view { color: var(--accent); }
+
+    /* Outcome badge styles */
+    .status {
+      font-size: 10px; padding: 2px 8px; border-radius: 2px; font-weight: 500;
+    }
+    .status.offer    { color: var(--accent);    background: var(--bg-accent-faint); border: 0.5px solid var(--border-accent); }
+    .status.no-offer { color: var(--red);       background: var(--red-bg);          border: 0.5px solid var(--red-border); }
+    .status.pending  { color: var(--yellow);    background: var(--yellow-bg);       border: 0.5px solid var(--yellow-border); }
+    .status.withdrew { color: var(--text-dim);  background: #111;                   border: 0.5px solid var(--border); }
+
+    /* Hidden row state (used by filter buttons) */
+    .interview-row.hidden { display: none; }
+
+    /* ---- FOOTER ---- */
+    .page-footer { margin-top: 64px; font-size: 11px; color: var(--text-dim); border-top: 1px solid var(--border); padding-top: 24px; }
+
+    @media (max-width: 600px) {
+      nav { padding: 10px 16px; }
+      .page { padding: 40px 16px; }
+      /* Hide less important columns on mobile */
+      .col-topics, .col-rounds { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================================
+    NAVBAR
+    .nav-back: the "← back" link — update href if your portfolio
+    index.html lives at a different relative path.
+  ============================================================ -->
+  <nav>
+    <div class="nav-brand">hemant@portfolio:~/interviews<span class="cursor"></span></div>
+    <a href="../index.html" class="nav-back">← back to portfolio</a>
+  </nav>
+
+  <div class="page">
+
+    <!-- PAGE HEADER -->
+    <div class="page-header">
+      <div class="cmd-line">
+        <span class="cmd-prompt">~$</span>
+        <span class="cmd-text">cat interviews.log</span>
+      </div>
+      <div class="cmd-comment"># every interview, documented — the unfiltered journey</div>
+
+      <!-- ============================================================
+        STATS ROW
+        Update each .stat-number to match your real counts.
+        These are manual — change them each time you add a new interview.
+
+        Stat items:
+          Total interviews, Offers, Final rounds reached, Companies
+        To add a stat: copy one .stat-item block.
+      ============================================================ -->
+      <div class="stats-row">
+        <div class="stat-item">
+          <span class="stat-number" id="stat-total">0</span>
+          <!-- stat-total is auto-counted from the table rows via JS -->
+          <span class="stat-label">Total Interviews</span>
+        </div>
+        <div class="stat-item">
+          <!-- Update this number manually -->
+          <span class="stat-number">1</span>
+          <span class="stat-label">Offers</span>
+        </div>
+        <div class="stat-item">
+          <!-- Update this number manually -->
+          <span class="stat-number">3</span>
+          <span class="stat-label">Final Rounds</span>
+        </div>
+        <div class="stat-item">
+          <!-- Update this number manually -->
+          <span class="stat-number">6</span>
+          <span class="stat-label">Companies</span>
+        </div>
+        <!-- Add more stats here if needed, e.g. countries, roles, etc. -->
+      </div>
+    </div>
+
+    <!-- ============================================================
+      FILTER BUTTONS
+      Filter by outcome. data-filter must match data-outcome on rows.
+      "all" shows everything. No changes needed here.
+    ============================================================ -->
+    <div class="filter-row">
+      <button class="filter-btn active" data-filter="all">all</button>
+      <button class="filter-btn" data-filter="offer">offers</button>
+      <button class="filter-btn" data-filter="no-offer">no offer</button>
+      <button class="filter-btn" data-filter="pending">in progress</button>
+      <button class="filter-btn" data-filter="withdrew">withdrew</button>
+    </div>
+
+    <!-- ============================================================
+      INTERVIEW TABLE
+      Each row links to a detail page via data-href.
+
+      HOW TO ADD A NEW INTERVIEW:
+        1. Copy one <tr class="interview-row"> block
+        2. Set data-href to the relative path of the detail page
+           e.g. data-href="./google-security-analyst.html"
+        3. Set data-outcome to: offer | no-offer | pending | withdrew
+        4. Fill in the 6 <td> columns:
+             td-company, Role, Date, Rounds, Topics, Outcome badge
+        5. Create the detail page from interview-template.html
+
+      COLUMN ORDER: Company | Role | Date | Rounds | Topics | Outcome | →
+    ============================================================ -->
+    <div class="table-wrap">
+      <table class="interview-table">
+        <thead>
+          <tr>
+            <th>Company</th>
+            <th>Role</th>
+            <th>Date</th>
+            <th class="col-rounds">Rounds</th>
+            <th class="col-topics">Topics</th>
+            <th>Outcome</th>
+            <th></th><!-- view arrow column -->
+          </tr>
+        </thead>
+        <tbody>
+
+          <!-- ── INTERVIEW ROW ──────────────────────────────────────
+            data-href:    path to the detail page for this interview
+            data-outcome: offer | no-offer | pending | withdrew
+            Duplicate this block for every interview you add.
+          ──────────────────────────────────────────────────────── -->
+          <tr class="interview-row" data-href="./company-role-template.html" data-outcome="offer">
+            <td class="td-company">Series B SaaS Startup</td>
+            <td>AppSec Engineer</td>
+            <td>Mar 2025</td>
+            <td class="col-rounds">3 / 3</td>
+            <td class="col-topics">OWASP Top 10, code review, SDLC</td>
+            <td><span class="status offer">Offer</span></td>
+            <td class="td-view">view →</td>
+          </tr>
+
+          <tr class="interview-row" data-href="./company-role-template.html" data-outcome="no-offer">
+            <td class="td-company">Fortune 500 Fintech</td>
+            <td>Security Analyst Intern</td>
+            <td>Jan 2025</td>
+            <td class="col-rounds">4 / 4</td>
+            <td class="col-topics">Threat modeling, network protocols, Python</td>
+            <td><span class="status no-offer">No Offer</span></td>
+            <td class="td-view">view →</td>
+          </tr>
+
+          <tr class="interview-row" data-href="./company-role-template.html" data-outcome="no-offer">
+            <td class="td-company">Defense Contractor</td>
+            <td>Penetration Tester Intern</td>
+            <td>Nov 2024</td>
+            <td class="col-rounds">2 / 3</td>
+            <td class="col-topics">Enumeration, OSINT, report writing</td>
+            <td><span class="status no-offer">No Offer</span></td>
+            <td class="td-view">view →</td>
+          </tr>
+
+          <tr class="interview-row" data-href="./company-role-template.html" data-outcome="pending">
+            <td class="td-company">Your Company Here</td>
+            <td>Role Title Here</td>
+            <td>Apr 2025</td>
+            <td class="col-rounds">1 / ?</td>
+            <td class="col-topics">Topics covered so far</td>
+            <td><span class="status pending">In Progress</span></td>
+            <td class="td-view">view →</td>
+          </tr>
+
+          <!-- ADD NEW INTERVIEW ROWS ABOVE THIS LINE -->
+
+        </tbody>
+      </table>
+    </div><!-- end .table-wrap -->
+
+    <div class="page-footer">
+      <!-- Update name and URL -->
+      © <span id="yr"></span> Hemant Sherawat · <a href="../index.html" style="color:var(--text-dim);text-decoration:none">hemantsherawat.com</a>
+    </div>
+
+  </div><!-- end .page -->
+
+  <script>
+    // ---- AUTO-COUNT TOTAL INTERVIEWS ----
+    // Reads the number of rows in the table and sets the stat.
+    // No changes needed.
+    const rows = document.querySelectorAll('.interview-row');
+    document.getElementById('stat-total').textContent = rows.length;
+
+    // ---- ROW CLICK — NAVIGATE TO DETAIL PAGE ----
+    // Reads data-href on each row and navigates on click.
+    // Make sure each row's data-href points to a real file.
+    rows.forEach(row => {
+      row.addEventListener('click', () => {
+        const href = row.dataset.href;
+        if (href) window.location.href = href;
+      });
+    });
+
+    // ---- FILTER BUTTONS ----
+    // Filters rows by data-outcome value.
+    // "all" shows everything. No changes needed.
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const filter = btn.dataset.filter;
+        rows.forEach(row => {
+          if (filter === 'all' || row.dataset.outcome === filter) {
+            row.classList.remove('hidden');
+          } else {
+            row.classList.add('hidden');
+          }
+        });
+      });
+    });
+
+    // ---- FOOTER YEAR ----
+    document.getElementById('yr').textContent = new Date().getFullYear();
+  </script>
+
+</body>
+</html>

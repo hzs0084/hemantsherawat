@@ -1,0 +1,615 @@
+/* ================================================================
+   styles.css — Portfolio Stylesheet
+   Hemant Sherawat · hemantsherawat.com
+   ================================================================
+
+   TABLE OF CONTENTS
+   -----------------
+   1.  CSS Variables (Theme Colors)
+   2.  Base Reset & Global Styles
+   3.  Scrollbar
+   4.  Animations (blink cursor, scroll reveal)
+   5.  Navbar
+   6.  Section Wrapper & Section Headers
+   7.  Hero (#whoami)
+       7a. ASCII Art
+       7b. Name, Title, Description
+       7c. Tag Pills
+       7d. Sysinfo Card
+       7e. Buttons
+   8.  Skills (#skills)
+   9.  Timeline (#timeline)
+   10. Projects (#projects)
+   11. Achievements (#achievements)
+   12. Interview Log (#interviews)
+   13. Contact (#contact)
+   14. Footer
+   15. Responsive / Mobile
+
+   ================================================================ */
+
+
+/* ----------------------------------------------------------------
+   1. CSS VARIABLES — THEME COLORS
+   Change these to restyle the entire site instantly.
+
+   --accent:          Main green highlight color
+   --accent-dim:      Dimmer version used for hover states & labels
+   --bg:              Page background
+   --bg-card:         Card / panel background
+   --bg-hover:        Hover background on interactive rows/cards
+   --bg-accent-faint: Very faint green tint for badge backgrounds
+   --border:          Default border color
+   --border-accent:   Accent-colored (green) border
+   --text:            Primary text color
+   --text-muted:      Secondary / muted text
+   --text-dim:        Dimmer tertiary text (labels, timestamps)
+   --red / --yellow:  Used for outcome badge colors
+   --font:            Font family — change here to update everywhere
+---------------------------------------------------------------- */
+:root {
+  --accent:          #00ff88;
+  --accent-dim:      #00cc6a;
+  --bg:              #080808;
+  --bg-card:         #0d0d0d;
+  --bg-hover:        #111;
+  --bg-accent-faint: #061a0f;
+  --border:          #1e1e1e;
+  --border-accent:   #1a3d2b;
+  --text:            #e8e8e8;
+  --text-muted:      #888;
+  --text-dim:        #444;
+  --red:             #cc6655;
+  --red-bg:          #1a0a08;
+  --red-border:      #3d1a14;
+  --yellow:          #ccaa44;
+  --yellow-bg:       #1a1608;
+  --yellow-border:   #3d3014;
+  --font:            'JetBrains Mono', monospace;
+}
+
+
+/* ----------------------------------------------------------------
+   2. BASE RESET & GLOBAL STYLES
+   No changes needed here unless you want to adjust
+   base font size, line height, or scroll behavior.
+---------------------------------------------------------------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+
+/* ----------------------------------------------------------------
+   3. SCROLLBAR
+   Gives the browser scrollbar a dark terminal look.
+   Remove this block to restore the default browser scrollbar.
+---------------------------------------------------------------- */
+::-webkit-scrollbar       { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: #222; border-radius: 3px; }
+
+
+/* ----------------------------------------------------------------
+   4. ANIMATIONS
+
+   .cursor — blinking terminal cursor in the navbar.
+             No changes needed.
+
+   .reveal / .reveal.visible — scroll-reveal fade+slide.
+             Elements start invisible and slide up when they
+             enter the viewport. Triggered by IntersectionObserver
+             in main.js. Adjust translateY or transition duration
+             here if you want a different animation feel.
+---------------------------------------------------------------- */
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+.cursor {
+  display: inline-block;
+  width: 8px;
+  height: 14px;
+  background: var(--accent);
+  animation: blink 1s step-end infinite;
+  vertical-align: text-bottom;
+  margin-left: 2px;
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+/* ----------------------------------------------------------------
+   5. NAVBAR
+   Sticky top bar with terminal prompt on the left and nav
+   links on the right.
+
+   To change the prompt text: edit .nav-brand in index.html.
+   To add a nav link: copy an <a> in index.html and set
+   href="#section-id" to match the target section.
+---------------------------------------------------------------- */
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(8, 8, 8, 0.92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.nav-brand {
+  font-size: 13px;
+  color: var(--accent);
+  font-weight: 500;
+}
+.nav-links { display: flex; gap: 20px; flex-wrap: wrap; }
+.nav-links a {
+  font-size: 11px;
+  color: var(--text-muted);
+  text-decoration: none;
+  letter-spacing: 0.05em;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--accent); }
+
+
+/* ----------------------------------------------------------------
+   6. SECTION WRAPPER & SECTION HEADERS
+
+   section — wraps every page section.
+     max-width: controls content width. Reduce to 760px for narrower.
+     padding: controls top/bottom spacing per section.
+
+   .section-cmd — the green "$ command" header above each section.
+     .cmd-prompt:  the "~$" dollar sign
+     .cmd-text:    the command name (e.g. "cat skills.txt")
+     .cmd-comment: the grey italic description line below
+---------------------------------------------------------------- */
+section {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 72px 32px;
+  border-bottom: 1px solid var(--border);
+}
+section:last-of-type { border-bottom: none; }
+
+.section-cmd  { margin-bottom: 32px; }
+.cmd-line     { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.cmd-prompt   { color: var(--text-dim); font-size: 13px; }
+.cmd-text     { color: var(--accent); font-size: 16px; font-weight: 500; }
+.cmd-comment  { font-size: 11px; color: var(--text-dim); font-style: italic; }
+
+
+/* ----------------------------------------------------------------
+   7. HERO SECTION (#whoami)
+---------------------------------------------------------------- */
+#whoami { padding-top: 80px; }
+
+/* 7a. ASCII Art banner
+   Generate your own at: https://patorjk.com/software/taag/
+   Recommended fonts: ANSI Shadow, Big, Banner3
+   Paste the output into <pre class="ascii-art"> in index.html. */
+.ascii-art {
+  font-size: 9px;
+  line-height: 1.15;
+  color: #1a3d2b;
+  white-space: pre;
+  overflow-x: auto;
+  margin-bottom: 28px;
+  letter-spacing: 0;
+}
+
+/* 7b. Name, Title, Description
+   Update the actual text in index.html, not here. */
+.hero-name {
+  font-size: 28px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 6px;
+}
+.hero-title {
+  font-size: 14px;
+  color: var(--accent-dim);
+  margin-bottom: 16px;
+}
+.hero-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+  max-width: 560px;
+  line-height: 1.7;
+  margin-bottom: 24px;
+}
+
+/* 7c. Tag Pills
+   To add/remove tags: edit <span class="hero-tag"> in index.html. */
+.hero-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+.hero-tag {
+  font-size: 10px;
+  color: var(--accent);
+  background: var(--bg-accent-faint);
+  border: 0.5px solid var(--border-accent);
+  padding: 4px 10px;
+  border-radius: 3px;
+}
+
+/* 7d. Sysinfo Card (neofetch-style)
+   To edit rows: update .si-key / .si-val text in index.html.
+   To add a row: copy one <div class="si-row"> block. */
+.sysinfo {
+  background: #0d1a12;
+  border: 0.5px solid var(--border-accent);
+  border-radius: 6px;
+  padding: 16px 20px;
+  margin-bottom: 28px;
+  max-width: 480px;
+}
+.si-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 6px;
+  font-size: 12px;
+}
+.si-row:last-child { margin-bottom: 0; }
+.si-key { color: var(--accent-dim); min-width: 90px; }
+.si-val { color: var(--text-muted); }
+
+/* 7e. Buttons
+   .btn-primary: filled green button (e.g. Download Resume)
+   .btn-ghost:   outlined button (e.g. GitHub)
+   To change text/links: edit the <a> tags in index.html. */
+.hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn {
+  font-family: var(--font);
+  font-size: 12px;
+  padding: 8px 18px;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s;
+  border: 0.5px solid;
+}
+.btn-primary {
+  color: #000;
+  background: var(--accent);
+  border-color: var(--accent);
+  font-weight: 500;
+}
+.btn-primary:hover { background: var(--accent-dim); border-color: var(--accent-dim); }
+.btn-ghost {
+  color: var(--text-muted);
+  background: transparent;
+  border-color: var(--border);
+}
+.btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+
+/* ----------------------------------------------------------------
+   8. SKILLS SECTION (#skills)
+
+   .skills-grid — responsive grid of category cards.
+   .skill-card  — one card per skill category.
+   .skill-pill  — individual tool/technology tag.
+
+   To add a category: copy a .skill-card block in index.html.
+   To add a pill: add <span class="skill-pill">Name</span>.
+---------------------------------------------------------------- */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+}
+.skill-card {
+  background: var(--bg-card);
+  border: 0.5px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+  transition: border-color 0.2s;
+}
+.skill-card:hover { border-color: var(--border-accent); }
+.skill-cat-name {
+  font-size: 10px;
+  color: var(--accent-dim);
+  letter-spacing: 0.08em;
+  margin-bottom: 12px;
+}
+.skill-pills { display: flex; flex-wrap: wrap; gap: 5px; }
+.skill-pill {
+  font-size: 10px;
+  color: var(--text-muted);
+  background: #141414;
+  border: 0.5px solid #222;
+  padding: 3px 8px;
+  border-radius: 3px;
+}
+
+
+/* ----------------------------------------------------------------
+   9. TIMELINE SECTION (#timeline)
+
+   Two-column layout: career/education on the left, interview
+   journey on the right.
+
+   .tl-item    — one milestone block.
+   .tl-dot     — the dot on the vertical line (hollow = past).
+   .tl-dot.active — filled dot for current position.
+
+   To add a milestone: copy a .tl-item block in index.html.
+   Add items newest-first (top of the list = most recent).
+---------------------------------------------------------------- */
+.tl-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 40px;
+}
+.tl-column-label {
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  border-bottom: 0.5px solid var(--border);
+  padding-bottom: 8px;
+}
+.timeline { position: relative; padding-left: 22px; }
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 6px; top: 0; bottom: 0;
+  width: 1px;
+  background: var(--border);
+}
+.tl-item          { position: relative; margin-bottom: 28px; }
+.tl-item:last-child { margin-bottom: 0; }
+.tl-dot {
+  position: absolute;
+  left: -19px; top: 5px;
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  border: 1.5px solid var(--accent);
+  background: var(--bg);
+}
+.tl-dot.active    { background: var(--accent); }
+.tl-year          { font-size: 10px; color: var(--text-dim);  margin-bottom: 3px; }
+.tl-role          { font-size: 13px; color: #ddd; font-weight: 500; margin-bottom: 2px; }
+.tl-org           { font-size: 11px; color: var(--accent-dim); margin-bottom: 4px; }
+.tl-desc          { font-size: 11px; color: var(--text-muted); line-height: 1.6; }
+
+
+/* ----------------------------------------------------------------
+   10. PROJECTS SECTION (#projects)
+
+   .proj-card — one project, the whole card is a clickable link.
+   To add a project: copy a .proj-card block in index.html and
+   set href to the GitHub repo URL.
+   To add a stack tag: add <span class="proj-tag">Name</span>.
+---------------------------------------------------------------- */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 14px;
+}
+.proj-card {
+  background: var(--bg-card);
+  border: 0.5px solid var(--border);
+  border-radius: 8px;
+  padding: 18px;
+  text-decoration: none;
+  display: block;
+  transition: border-color 0.2s, transform 0.2s;
+}
+.proj-card:hover {
+  border-color: var(--border-accent);
+  transform: translateY(-2px);
+}
+.proj-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+.proj-name  { font-size: 13px; color: #fff; font-weight: 500; }
+.proj-arrow { font-size: 12px; color: var(--text-dim); transition: color 0.2s; }
+.proj-card:hover .proj-arrow { color: var(--accent); }
+.proj-desc  { font-size: 11px; color: var(--text-muted); line-height: 1.6; margin-bottom: 14px; }
+.proj-tags  { display: flex; flex-wrap: wrap; gap: 4px; }
+.proj-tag {
+  font-size: 9px;
+  color: var(--accent-dim);
+  background: var(--bg-accent-faint);
+  border: 0.5px solid var(--border-accent);
+  padding: 2px 6px;
+  border-radius: 2px;
+}
+
+
+/* ----------------------------------------------------------------
+   11. ACHIEVEMENTS SECTION (#achievements)
+
+   .achievement-item — one achievement card.
+   .ach-badge        — colored label in the top-right of the card.
+
+   Badge color classes — use the right one per achievement type:
+     .badge-gold   → awards, scholarships, honors
+     .badge-blue   → certifications, completed courses
+     .badge-green  → CTF / competition placements
+     .badge-purple → publications, research, conference talks
+
+   To add an achievement: copy an .achievement-item block in index.html.
+---------------------------------------------------------------- */
+.achievements-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 14px;
+}
+.achievement-item {
+  background: var(--bg-card);
+  border: 0.5px solid var(--border);
+  border-radius: 8px;
+  padding: 18px;
+  transition: border-color 0.2s;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.achievement-item:hover { border-color: var(--border-accent); }
+.ach-top    { display: flex; justify-content: space-between; align-items: flex-start; }
+.ach-icon   { font-size: 18px; line-height: 1; }
+.ach-badge  {
+  font-size: 9px;
+  padding: 2px 7px;
+  border-radius: 2px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.badge-gold   { color: #c8960c; background: #1f1800; border: 0.5px solid #3d2e00; }
+.badge-blue   { color: #4da6ff; background: #071020; border: 0.5px solid #0d2440; }
+.badge-green  { color: var(--accent); background: var(--bg-accent-faint); border: 0.5px solid var(--border-accent); }
+.badge-purple { color: #b388ff; background: #0f0820; border: 0.5px solid #2a1860; }
+.ach-title  { font-size: 13px; color: #ddd; font-weight: 500; }
+.ach-meta   { font-size: 10px; color: var(--text-dim); }
+.ach-desc   { font-size: 11px; color: var(--text-muted); line-height: 1.6; }
+
+
+/* ----------------------------------------------------------------
+   12. INTERVIEW LOG SECTION (#interviews)
+
+   .interview-table — summary table of all interviews.
+   .status           — outcome badge (offer / no-offer / etc.)
+   .takeaway-row     — optional italic lesson below each interview row.
+
+   Outcome badge classes:
+     .status.offer    → green  (offer received)
+     .status.no-offer → red    (rejection)
+     .status.pending  → yellow (in progress)
+     .status.withdrew → grey   (withdrew)
+
+   To add an interview: copy a <tr> + optional takeaway <tr> in index.html.
+   To remove the takeaway: delete the <tr class="takeaway-row"> block.
+---------------------------------------------------------------- */
+.interview-table-wrap { overflow-x: auto; }
+.interview-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+.interview-table thead tr     { border-bottom: 0.5px solid var(--border); }
+.interview-table th {
+  text-align: left;
+  padding: 8px 12px;
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 400;
+}
+.interview-table td {
+  padding: 10px 12px;
+  color: var(--text-muted);
+  border-bottom: 0.5px solid #111;
+  vertical-align: top;
+}
+.interview-table tbody tr:last-child td { border-bottom: none; }
+.interview-table tbody tr:hover td     { background: var(--bg-hover); }
+.td-company { color: var(--text) !important; }
+
+.status           { font-size: 10px; padding: 2px 8px; border-radius: 2px; font-weight: 500; }
+.status.offer     { color: var(--accent);   background: var(--bg-accent-faint); border: 0.5px solid var(--border-accent); }
+.status.no-offer  { color: var(--red);      background: var(--red-bg);          border: 0.5px solid var(--red-border); }
+.status.pending   { color: var(--yellow);   background: var(--yellow-bg);       border: 0.5px solid var(--yellow-border); }
+.status.withdrew  { color: var(--text-dim); background: #111;                   border: 0.5px solid var(--border); }
+
+.takeaway-row td {
+  padding: 4px 12px 14px;
+  font-size: 11px;
+  font-style: italic;
+  color: var(--text-dim);
+  border-bottom: 0.5px solid var(--border);
+}
+.takeaway-row td::before { content: '↳ '; color: var(--border-accent); }
+
+
+/* ----------------------------------------------------------------
+   13. CONTACT SECTION (#contact)
+
+   .contact-chip — each link button (LinkedIn, GitHub, etc.)
+   To add a link: copy an <a class="contact-chip"> in index.html.
+   To remove a link: delete the <a> block.
+---------------------------------------------------------------- */
+#contact { text-align: center; }
+.contact-tagline {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 32px;
+  max-width: 440px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.contact-links { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; }
+.contact-chip {
+  font-family: var(--font);
+  font-size: 12px;
+  color: var(--accent-dim);
+  background: var(--bg-accent-faint);
+  border: 0.5px solid var(--border-accent);
+  padding: 8px 18px;
+  border-radius: 4px;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+.contact-chip:hover { background: var(--border-accent); color: var(--accent); }
+
+
+/* ----------------------------------------------------------------
+   14. FOOTER
+   Update the text content in main.js (footer year auto-fills).
+   Update the name/domain string in main.js — search for "footer-text".
+---------------------------------------------------------------- */
+footer {
+  text-align: center;
+  padding: 28px 32px;
+  font-size: 11px;
+  color: var(--text-dim);
+  border-top: 1px solid var(--border);
+}
+
+
+/* ----------------------------------------------------------------
+   15. RESPONSIVE — MOBILE ADJUSTMENTS
+   Breakpoint at 600px.
+   - Hides nav links (too cramped on small screens)
+   - Reduces section padding
+   - Collapses the two-column timeline to a single column
+   - Shrinks the hero name and ASCII art font sizes
+
+   To show nav links on mobile too: remove ".nav-links { display: none; }"
+---------------------------------------------------------------- */
+@media (max-width: 600px) {
+  nav                        { padding: 10px 16px; }
+  .nav-links                 { display: none; }
+  section                    { padding: 48px 20px; }
+  .tl-layout                 { grid-template-columns: 1fr; }
+  .hero-name                 { font-size: 22px; }
+  .ascii-art                 { font-size: 7px; }
+}

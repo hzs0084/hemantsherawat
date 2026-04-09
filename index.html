@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- ============================================================
+    PAGE TITLE
+    Change "Hemant Sherawat" to your full name.
+    The text after the dash is your tagline — update as you like.
+  ============================================================ -->
+  <title>Hemant Sherawat | Cybersecurity Engineer</title>
+
+  <!-- ============================================================
+    FAVICON
+    Replace the href with a path to your own favicon file.
+    You can generate one at https://favicon.io
+    Example: <link rel="icon" href="./assets/favicon.ico" />
+  ============================================================ -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔐</text></svg>" />
+
+  <!-- ============================================================
+    FONTS
+    Currently using "JetBrains Mono" for the terminal aesthetic.
+    To change fonts, replace both the Google Fonts URL and the
+    font-family in the :root block below.
+  ============================================================ -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ============================================================
+      CSS VARIABLES — THEME COLORS
+      Change these to restyle the entire site instantly.
+      --accent:     The main green highlight color
+      --accent-dim: A dimmer version for hover states
+      --bg:         Main background
+      --bg-card:    Card/panel background
+      --bg-hover:   Hover background on cards
+      --border:     Default border color
+      --border-accent: Accent-colored border
+      --text:       Primary text
+      --text-muted: Secondary / muted text
+      --text-dim:   Dimmer tertiary text
+    ============================================================ */
+    :root {
+      --accent:        #00ff88;
+      --accent-dim:    #00cc6a;
+      --bg:            #080808;
+      --bg-card:       #0d0d0d;
+      --bg-hover:      #111;
+      --bg-accent-faint: #061a0f;
+      --border:        #1e1e1e;
+      --border-accent: #1a3d2b;
+      --text:          #e8e8e8;
+      --text-muted:    #888;
+      --text-dim:      #444;
+      --red:           #cc6655;
+      --red-bg:        #1a0a08;
+      --red-border:    #3d1a14;
+      --yellow:        #ccaa44;
+      --yellow-bg:     #1a1608;
+      --yellow-border: #3d3014;
+      --font:          'JetBrains Mono', monospace;
+    }
+
+    /* ============================================================
+      BASE RESET & GLOBAL STYLES
+      No changes needed here unless you want to tweak
+      base font size, line height, or scroll behavior.
+    ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* ============================================================
+      SCROLLBAR STYLING
+      Gives the browser scrollbar a dark terminal look.
+      Remove this block if you prefer the default browser scrollbar.
+    ============================================================ */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: #222; border-radius: 3px; }
+
+    /* ============================================================
+      CURSOR BLINK ANIMATION
+      Used in the navbar to simulate a terminal cursor.
+      No changes needed.
+    ============================================================ */
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+    .cursor {
+      display: inline-block;
+      width: 8px;
+      height: 14px;
+      background: var(--accent);
+      animation: blink 1s step-end infinite;
+      vertical-align: text-bottom;
+      margin-left: 2px;
+    }
+
+    /* ============================================================
+      SCROLL REVEAL ANIMATION
+      Sections fade + slide up when they enter the viewport.
+      Controlled by the IntersectionObserver at the bottom of
+      the <script> block. No changes needed here.
+    ============================================================ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ============================================================
+      LAYOUT — NAVBAR
+      The top navigation bar.
+      - .nav-brand: your terminal name/prompt on the left
+      - .nav-links: the navigation links on the right
+      To add a new nav link, copy one of the <a> tags in the
+      HTML and point its href to the matching section id.
+    ============================================================ -->
+    */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(8, 8, 8, 0.92);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-brand {
+      font-size: 13px;
+      color: var(--accent);
+      font-weight: 500;
+    }
+    .nav-links { display: flex; gap: 20px; flex-wrap: wrap; }
+    .nav-links a {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-decoration: none;
+      letter-spacing: 0.05em;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+
+    /* ============================================================
+      LAYOUT — SECTION WRAPPER
+      Every section on the page uses this class.
+      max-width controls how wide the content gets.
+      padding controls spacing on the sides.
+      To make the layout narrower, reduce max-width (e.g. 760px).
+    ============================================================ */
+    section {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 72px 32px;
+      border-bottom: 1px solid var(--border);
+    }
+    section:last-of-type { border-bottom: none; }
+
+    /* ============================================================
+      SECTION HEADER (command prompt style)
+      The green "$ command" line that labels each section.
+      .cmd-prompt: the dollar sign
+      .cmd-text:   the command name
+      .cmd-comment: the grey italic description under the command
+    ============================================================ */
+    .section-cmd {
+      margin-bottom: 32px;
+    }
+    .cmd-line {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+    .cmd-prompt { color: var(--text-dim); font-size: 13px; }
+    .cmd-text { color: var(--accent); font-size: 16px; font-weight: 500; }
+    .cmd-comment { font-size: 11px; color: var(--text-dim); font-style: italic; }
+
+    /* ============================================================
+      HERO SECTION (#whoami)
+      The first section the visitor sees.
+      - ASCII art at the top (decorative name banner)
+      - Your name, title, and description
+      - A sysinfo card (like `neofetch` output)
+      - Action buttons
+    ============================================================ */
+    #whoami { padding-top: 80px; }
+
+    /* ASCII Art banner — edit the text inside .ascii-art
+       to use a different ASCII font. Generate at: https://patorjk.com/software/taag/
+       Recommended fonts: Big, Banner3, ANSI Shadow */
+    .ascii-art {
+      font-size: 9px;
+      line-height: 1.15;
+      color: #1a3d2b;
+      white-space: pre;
+      overflow-x: auto;
+      margin-bottom: 28px;
+      letter-spacing: 0;
+    }
+
+    /* ============================================================
+      HERO — NAME & TITLE
+      Update .hero-name with your full name.
+      Update .hero-title with your current role/status.
+      Update .hero-desc with a 1-2 sentence bio.
+    ============================================================ */
+    .hero-name {
+      font-size: 28px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+    .hero-title {
+      font-size: 14px;
+      color: var(--accent-dim);
+      margin-bottom: 16px;
+    }
+    .hero-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      max-width: 560px;
+      line-height: 1.7;
+      margin-bottom: 24px;
+    }
+
+    /* ============================================================
+      HERO — TAG PILLS
+      These appear as small badges below your title.
+      To add/remove a tag: add or delete a <span class="hero-tag"> in the HTML.
+    ============================================================ */
+    .hero-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+    .hero-tag {
+      font-size: 10px;
+      color: var(--accent);
+      background: var(--bg-accent-faint);
+      border: 0.5px solid var(--border-accent);
+      padding: 4px 10px;
+      border-radius: 3px;
+    }
+
+    /* ============================================================
+      HERO — SYSINFO CARD (neofetch style)
+      Mimics the output of the `neofetch` terminal command.
+      To edit rows: find the <div class="si-row"> elements in the
+      HTML and update the .si-key and .si-val text.
+      To add a row: copy one <div class="si-row"> block.
+    ============================================================ */
+    .sysinfo {
+      background: #0d1a12;
+      border: 0.5px solid var(--border-accent);
+      border-radius: 6px;
+      padding: 16px 20px;
+      margin-bottom: 28px;
+      max-width: 480px;
+    }
+    .si-row {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 6px;
+      font-size: 12px;
+    }
+    .si-row:last-child { margin-bottom: 0; }
+    .si-key { color: var(--accent-dim); min-width: 90px; }
+    .si-val { color: var(--text-muted); }
+
+    /* ============================================================
+      HERO — ACTION BUTTONS
+      .btn-primary: solid/accent button (e.g. Download Resume)
+      .btn-ghost:   outlined button (e.g. View GitHub)
+      To change button text or links: edit the <a> tags in the HTML.
+      To add a button: copy one <a> block and update href + text.
+    ============================================================ */
+    .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+    .btn {
+      font-family: var(--font);
+      font-size: 12px;
+      padding: 8px 18px;
+      border-radius: 4px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+      border: 0.5px solid;
+    }
+    .btn-primary {
+      color: #000;
+      background: var(--accent);
+      border-color: var(--accent);
+      font-weight: 500;
+    }
+    .btn-primary:hover { background: var(--accent-dim); border-color: var(--accent-dim); }
+    .btn-ghost {
+      color: var(--text-muted);
+      background: transparent;
+      border-color: var(--border);
+    }
+    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ============================================================
+      SKILLS SECTION (#skills)
+      Organized into category cards.
+      Each card = one skill category.
+      To add a category: copy one .skill-card block in the HTML.
+      To add a skill pill: copy one <span class="skill-pill"> tag.
+      To rename a category: edit the .skill-cat-name text.
+    ============================================================ */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px;
+    }
+    .skill-card {
+      background: var(--bg-card);
+      border: 0.5px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      transition: border-color 0.2s;
+    }
+    .skill-card:hover { border-color: var(--border-accent); }
+    .skill-cat-name {
+      font-size: 10px;
+      color: var(--accent-dim);
+      letter-spacing: 0.08em;
+      margin-bottom: 12px;
+    }
+    .skill-pills { display: flex; flex-wrap: wrap; gap: 5px; }
+    .skill-pill {
+      font-size: 10px;
+      color: var(--text-muted);
+      background: #141414;
+      border: 0.5px solid #222;
+      padding: 3px 8px;
+      border-radius: 3px;
+    }
+
+    /* ============================================================
+      TIMELINE SECTION (#timeline)
+      A vertical scroll-driven career/education timeline.
+      Each milestone = one .tl-item block.
+
+      To add a milestone:
+        1. Copy one <div class="tl-item"> block in the HTML
+        2. Update .tl-year, .tl-role, .tl-org, .tl-desc
+        3. Use class="tl-dot active" for your CURRENT position,
+           plain "tl-dot" for past positions.
+
+      To show an interview experience in this timeline,
+      add a .tl-item with .tl-type set to "interview".
+    ============================================================ */
+    .tl-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0 40px;
+    }
+    .tl-column-label {
+      font-size: 10px;
+      color: var(--text-dim);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      border-bottom: 0.5px solid var(--border);
+      padding-bottom: 8px;
+    }
+    .timeline { position: relative; padding-left: 22px; }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 6px; top: 0; bottom: 0;
+      width: 1px;
+      background: var(--border);
+    }
+    .tl-item {
+      position: relative;
+      margin-bottom: 28px;
+    }
+    .tl-item:last-child { margin-bottom: 0; }
+    .tl-dot {
+      position: absolute;
+      left: -19px;
+      top: 5px;
+      width: 9px; height: 9px;
+      border-radius: 50%;
+      border: 1.5px solid var(--accent);
+      background: var(--bg);
+    }
+    .tl-dot.active { background: var(--accent); }
+
+    /* .tl-year: the date/year label */
+    .tl-year { font-size: 10px; color: var(--text-dim); margin-bottom: 3px; }
+
+    /* .tl-role: job title or degree name */
+    .tl-role { font-size: 13px; color: #ddd; font-weight: 500; margin-bottom: 2px; }
+
+    /* .tl-org: company or university name */
+    .tl-org { font-size: 11px; color: var(--accent-dim); margin-bottom: 4px; }
+
+    /* .tl-desc: short description of the role/milestone */
+    .tl-desc { font-size: 11px; color: var(--text-muted); line-height: 1.6; }
+
+    /* ============================================================
+      PROJECTS SECTION (#projects)
+      Card grid layout.
+      Each project = one .proj-card block.
+
+      To add a project:
+        1. Copy one <div class="proj-card"> block in the HTML
+        2. Update .proj-name, .proj-desc, the .proj-tag pills,
+           and the href on the card's link.
+        3. The card is a link — set href to your GitHub repo URL.
+
+      To remove the link, change <a class="proj-card"> to
+      <div class="proj-card"> and remove the href.
+    ============================================================ */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 14px;
+    }
+    .proj-card {
+      background: var(--bg-card);
+      border: 0.5px solid var(--border);
+      border-radius: 8px;
+      padding: 18px;
+      text-decoration: none;
+      display: block;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .proj-card:hover {
+      border-color: var(--border-accent);
+      transform: translateY(-2px);
+    }
+
+    /* .proj-header: top row with name and arrow icon */
+    .proj-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 8px;
+    }
+    .proj-name { font-size: 13px; color: #fff; font-weight: 500; }
+    .proj-arrow { font-size: 12px; color: var(--text-dim); transition: color 0.2s; }
+    .proj-card:hover .proj-arrow { color: var(--accent); }
+    .proj-desc { font-size: 11px; color: var(--text-muted); line-height: 1.6; margin-bottom: 14px; }
+    .proj-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+    .proj-tag {
+      font-size: 9px;
+      color: var(--accent-dim);
+      background: var(--bg-accent-faint);
+      border: 0.5px solid var(--border-accent);
+      padding: 2px 6px;
+      border-radius: 2px;
+    }
+
+    /* ============================================================
+      ACHIEVEMENTS SECTION (#achievements)
+      A list of notable recognitions, awards, publications,
+      certifications, competition placements, etc.
+      Each item = one .achievement-item block.
+
+      To add an achievement:
+        1. Copy one <div class="achievement-item"> block in the HTML
+        2. Update .ach-icon (use a text emoji or leave as-is),
+           .ach-title, .ach-meta (date/org), and .ach-desc.
+        3. Use .ach-badge to add a colored label like "Award" or "Cert".
+           Badge types: .badge-gold (award), .badge-blue (cert),
+           .badge-green (competition), .badge-purple (publication).
+
+      To remove an achievement: delete the entire .achievement-item block.
+    ============================================================ */
+    .achievements-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 14px;
+    }
+    .achievement-item {
+      background: var(--bg-card);
+      border: 0.5px solid var(--border);
+      border-radius: 8px;
+      padding: 18px;
+      transition: border-color 0.2s;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .achievement-item:hover { border-color: var(--border-accent); }
+    .ach-top { display: flex; justify-content: space-between; align-items: flex-start; }
+
+    /* .ach-icon: decorative emoji or symbol at top-left of card */
+    .ach-icon { font-size: 18px; line-height: 1; }
+
+    /* Badge color variants — add the right class to .ach-badge */
+    .ach-badge {
+      font-size: 9px;
+      padding: 2px 7px;
+      border-radius: 2px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .badge-gold   { color: #c8960c; background: #1f1800; border: 0.5px solid #3d2e00; }
+    .badge-blue   { color: #4da6ff; background: #071020; border: 0.5px solid #0d2440; }
+    .badge-green  { color: var(--accent); background: var(--bg-accent-faint); border: 0.5px solid var(--border-accent); }
+    .badge-purple { color: #b388ff; background: #0f0820; border: 0.5px solid #2a1860; }
+
+    /* .ach-title: the name of the achievement */
+    .ach-title { font-size: 13px; color: #ddd; font-weight: 500; }
+
+    /* .ach-meta: date, organization, or issuing body */
+    .ach-meta { font-size: 10px; color: var(--text-dim); }
+
+    /* .ach-desc: one or two sentence description */
+    .ach-desc { font-size: 11px; color: var(--text-muted); line-height: 1.6; }
+
+    /* ============================================================
+      INTERVIEW LOG SECTION (#interviews)
+      Tabular log of your interview experiences.
+
+      Table columns: Company | Role | Stage | Topics | Outcome
+
+      To add an interview row:
+        1. Copy one <tr> block inside <tbody> in the HTML
+        2. Update each <td> with the relevant info
+        3. For the outcome <td>, use the right class:
+           - <span class="status offer">    for offers received
+           - <span class="status no-offer"> for rejections
+           - <span class="status pending">  for in-progress
+           - <span class="status withdrew"> for when you withdrew
+
+      Company names: use real names or anonymize (e.g. "Series B Fintech").
+      The .takeaway row is optional — it shows a lesson learned.
+      Remove it by deleting the <tr class="takeaway-row"> block.
+    ============================================================ -->
+    */
+    .interview-table-wrap { overflow-x: auto; }
+    .interview-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+    .interview-table thead tr {
+      border-bottom: 0.5px solid var(--border);
+    }
+    .interview-table th {
+      text-align: left;
+      padding: 8px 12px;
+      font-size: 10px;
+      color: var(--text-dim);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 400;
+    }
+    .interview-table td {
+      padding: 10px 12px;
+      color: var(--text-muted);
+      border-bottom: 0.5px solid #111;
+      vertical-align: top;
+    }
+    .interview-table tbody tr:last-child td { border-bottom: none; }
+    .interview-table tbody tr:hover td { background: var(--bg-hover); }
+
+    /* Company name — slightly brighter */
+    .td-company { color: var(--text) !important; }
+
+    /* Outcome badge styles */
+    .status {
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 2px;
+      font-weight: 500;
+    }
+    .status.offer    { color: var(--accent); background: var(--bg-accent-faint); border: 0.5px solid var(--border-accent); }
+    .status.no-offer { color: var(--red);    background: var(--red-bg);          border: 0.5px solid var(--red-border); }
+    .status.pending  { color: var(--yellow); background: var(--yellow-bg);       border: 0.5px solid var(--yellow-border); }
+    .status.withdrew { color: var(--text-dim); background: #111;                 border: 0.5px solid var(--border); }
+
+    /* Takeaway row — italic lesson learned */
+    .takeaway-row td {
+      padding: 4px 12px 14px;
+      font-size: 11px;
+      font-style: italic;
+      color: var(--text-dim);
+      border-bottom: 0.5px solid var(--border);
+    }
+    .takeaway-row td::before { content: '↳ '; color: var(--border-accent); }
+
+    /* ============================================================
+      CONTACT SECTION (#contact)
+      A row of link chips for your social/professional profiles.
+
+      To add a contact link:
+        1. Copy one <a class="contact-chip"> block in the HTML
+        2. Update href and the label text.
+
+      To remove a contact link: delete the <a> block.
+    ============================================================ -->
+    */
+    #contact { text-align: center; }
+    .contact-tagline {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 32px;
+      max-width: 440px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .contact-links { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; }
+    .contact-chip {
+      font-family: var(--font);
+      font-size: 12px;
+      color: var(--accent-dim);
+      background: var(--bg-accent-faint);
+      border: 0.5px solid var(--border-accent);
+      padding: 8px 18px;
+      border-radius: 4px;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .contact-chip:hover {
+      background: var(--border-accent);
+      color: var(--accent);
+    }
+
+    /* ============================================================
+      FOOTER
+      Bottom bar with copyright and quick links.
+      Update the name and year as needed.
+    ============================================================ */
+    footer {
+      text-align: center;
+      padding: 28px 32px;
+      font-size: 11px;
+      color: var(--text-dim);
+      border-top: 1px solid var(--border);
+    }
+
+    /* ============================================================
+      RESPONSIVE — MOBILE ADJUSTMENTS
+      Breakpoint at 600px: collapses multi-column layouts to single
+      column and hides some nav links to avoid overflow.
+    ============================================================ -->
+    */
+    @media (max-width: 600px) {
+      nav { padding: 10px 16px; }
+      .nav-links { display: none; }
+      section { padding: 48px 20px; }
+      .tl-layout { grid-template-columns: 1fr; }
+      .hero-name { font-size: 22px; }
+      .ascii-art { font-size: 7px; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ============================================================
+    NAVBAR
+    Left: your terminal prompt (update "hemant" to your username)
+    Right: navigation links — each href="#id" scrolls to that section
+    To add a nav link: copy one <a> and match the href to a section id.
+  ============================================================ -->
+  <nav>
+    <div class="nav-brand">hemant@portfolio:~<span class="cursor"></span></div>
+    <div class="nav-links">
+      <a href="#whoami">whoami</a>
+      <a href="#skills">skills</a>
+      <a href="#timeline">timeline</a>
+      <a href="#projects">projects</a>
+      <a href="#achievements">achievements</a>
+      <a href="#interviews">interviews</a>
+      <a href="#contact">contact</a>
+    </div>
+  </nav>
+
+
+  <!-- ============================================================
+    SECTION 1: HERO / WHOAMI
+    id="whoami" — linked from the navbar
+
+    What to update:
+      - ASCII art: generate at https://patorjk.com/software/taag/
+        Use font "ANSI Shadow" or "Big" for best results.
+        Paste the output inside the <pre class="ascii-art"> tag.
+      - .hero-name: your full name
+      - .hero-title: your current role or program
+      - .hero-desc: a 1–2 sentence bio about yourself
+      - .hero-tag pills: your key focus areas (add/remove as needed)
+      - sysinfo card rows: update each .si-val with your info
+      - Buttons: update href on the resume button to your PDF path
+        and the GitHub button to your GitHub profile URL
+  ============================================================ -->
+  <section id="whoami">
+
+    <!-- ASCII ART — replace with your own from patorjk.com -->
+    <pre class="ascii-art">
+██╗  ██╗███████╗███╗   ███╗ █████╗ ███╗   ██╗████████╗
+██║  ██║██╔════╝████╗ ████║██╔══██╗████╗  ██║╚══██╔══╝
+███████║█████╗  ██╔████╔██║███████║██╔██╗ ██║   ██║
+██╔══██║██╔══╝  ██║╚██╔╝██║██╔══██║██║╚██╗██║   ██║
+██║  ██║███████╗██║ ╚═╝ ██║██║  ██║██║ ╚████║   ██║
+    </pre>
+
+    <div class="section-cmd reveal">
+      <div class="cmd-line">
+        <span class="cmd-prompt">~$</span>
+        <span class="cmd-text">whoami</span>
+      </div>
+      <div class="cmd-comment"># about me</div>
+    </div>
+
+    <!-- NAME + TITLE — update these two lines -->
+    <h1 class="hero-name reveal">Hemant Sherawat</h1>
+    <p class="hero-title reveal">MS Cybersecurity Engineering · Offensive & Defensive Security</p>
+
+    <!-- BIO — write 1–2 sentences about yourself -->
+    <p class="hero-desc reveal">
+      Cybersecurity graduate student with a passion for breaking things ethically
+      and building secure systems. Focused on penetration testing, threat modeling,
+      and real-world security research.
+    </p>
+
+    <!-- TAG PILLS — add or remove <span> elements as needed -->
+    <div class="hero-tags reveal">
+      <span class="hero-tag">Penetration Testing</span>
+      <span class="hero-tag">Threat Modeling</span>
+      <span class="hero-tag">Network Security</span>
+      <span class="hero-tag">Malware Analysis</span>
+      <span class="hero-tag">CTF Player</span>
+      <span class="hero-tag">Open to Opportunities</span>
+    </div>
+
+    <!-- SYSINFO CARD — update each .si-val with your real info -->
+    <div class="sysinfo reveal">
+      <!-- Row format: <div class="si-row"><span class="si-key">Label</span><span class="si-val">Value</span></div> -->
+      <div class="si-row"><span class="si-key">OS</span><span class="si-val">Human v24.0 — curious by default</span></div>
+      <div class="si-row"><span class="si-key">Degree</span><span class="si-val">MS Cybersecurity Engineering</span></div>
+      <div class="si-row"><span class="si-key">University</span><span class="si-val">Your University Name Here</span></div>
+      <div class="si-row"><span class="si-key">Status</span><span class="si-val">Actively hunting bugs & opportunities</span></div>
+      <div class="si-row"><span class="si-key">Location</span><span class="si-val">Your City, State</span></div>
+      <div class="si-row"><span class="si-key">Uptime</span><span class="si-val">24/7 — always learning</span></div>
+    </div>
+
+    <!-- BUTTONS — update href="/resume.pdf" to your actual resume file path -->
+    <div class="hero-btns reveal">
+      <a href="/resume.pdf" class="btn btn-primary" download>$ download resume</a>
+      <a href="https://github.com/YOUR_USERNAME" target="_blank" class="btn btn-ghost">$ github →</a>
+      <!-- To add more buttons, copy one of the <a> blocks above -->
+    </div>
+
+  </section>
+
+
+  <!-- ============================================================
+    SECTION 2: SKILLS
+    id="skills" — linked from navbar
+
+    Organized into category cards.
+    Each .skill-card = one category.
+    Each .skill-pill = one tool/technology.
+
+    To ADD a skill category:
+      Copy an entire <div class="skill-card"> block and update
+      the .skill-cat-name and the pill list inside.
+
+    To ADD a skill pill within a category:
+      Add <span class="skill-pill">ToolName</span> inside .skill-pills.
+
+    To REMOVE a category or pill: delete the relevant block/tag.
+
+    Suggested categories for cybersecurity:
+      Offensive, Defensive, Cloud Security, Forensics,
+      Programming, Certifications, Operating Systems
+  ============================================================ -->
+  <section id="skills">
+    <div class="section-cmd reveal">
+      <div class="cmd-line">
+        <span class="cmd-prompt">~$</span>
+        <span class="cmd-text">cat skills.txt</span>
+      </div>
+      <div class="cmd-comment"># technical skills by category</div>
+    </div>
+
+    <div class="skills-grid">
+
+      <!-- OFFENSIVE SECURITY SKILLS -->
+      <div class="skill-card reveal">
+        <div class="skill-cat-name">// Offensive Security</div>
+        <div class="skill-pills">
+          <span class="skill-pill">Nmap</span>
+          <span class="skill-pill">Metasploit</span>
+          <span class="skill-pill">Burp Suite</span>
+          <span class="skill-pill">Wireshark</span>
+          <span class="skill-pill">Hydra</span>
+          <!-- Add more offensive tools here -->
+        </div>
+      </div>
+
+      <!-- DEFENSIVE SECURITY SKILLS -->
+      <div class="skill-card reveal">
+        <div class="skill-cat-name">// Defensive Security</div>
+        <div class="skill-pills">
+          <span class="skill-pill">SIEM</span>
+          <span class="skill-pill">IDS/IPS</span>
+          <span class="skill-pill">Threat Intel</span>
+          <span class="skill-pill">SOC Operations</span>
+          <span class="skill-pill">Log Analysis</span>
+          <!-- Add more defensive skills here -->
+        </div>
+      </div>
+
+      <!-- PROGRAMMING LANGUAGES -->
+      <div class="skill-card reveal">
+        <div class="skill-cat-name">// Languages</div>
+        <div class="skill-pills">
+          <span class="skill-pill">Python</span>
+          <span class="skill-pill">Bash</span>
+          <span class="skill-pill">PowerShell</span>
+          <span class="skill-pill">C</span>
+          <span class="skill-pill">SQL</span>
+          <!-- Add more languages here -->
+        </div>
+      </div>
+
+      <!-- PLATFORMS & TOOLS -->
+      <div class="skill-card reveal">
+        <div class="skill-cat-name">// Platforms & Tools</div>
+        <div class="skill-pills">
+          <span class="skill-pill">HackTheBox</span>
+          <span class="skill-pill">TryHackMe</span>
+          <span class="skill-pill">Kali Linux</span>
+          <span class="skill-pill">AWS</span>
+          <span class="skill-pill">Docker</span>
+          <!-- Add more platforms here -->
+        </div>
+      </div>
+
+      <!-- NETWORKING & PROTOCOLS -->
+      <div class="skill-card reveal">
+        <div class="skill-cat-name">// Networking</div>
+        <div class="skill-pills">
+          <span class="skill-pill">TCP/IP</span>
+          <span class="skill-pill">DNS</span>
+          <span class="skill-pill">HTTP/S</span>
+          <span class="skill-pill">Firewalls</span>
+          <span class="skill-pill">VPN</span>
+          <!-- Add more networking skills here -->
+        </div>
+      </div>
+
+      <!-- CERTIFICATIONS — list earned or in-progress certs here -->
+      <div class="skill-card reveal">
+        <div class="skill-cat-name">// Certifications</div>
+        <div class="skill-pills">
+          <span class="skill-pill">CompTIA Security+</span>
+          <span class="skill-pill">CEH (in progress)</span>
+          <!-- Add more certs here -->
+          <!-- Example: <span class="skill-pill">OSCP</span> -->
+        </div>
+      </div>
+
+    </div><!-- end .skills-grid -->
+  </section>
+
+
+  <!-- ============================================================
+    SECTION 3: TIMELINE
+    id="timeline" — linked from navbar
+
+    Split into TWO columns:
+      Left:  Career & Education milestones
+      Right: Interview journey milestones
+
+    Each milestone = one <div class="tl-item"> block.
+
+    To ADD a milestone:
+      1. Copy a .tl-item block
+      2. Update .tl-year, .tl-role, .tl-org, .tl-desc
+      3. For your CURRENT position use class="tl-dot active"
+         For past positions use class="tl-dot"
+
+    To REMOVE a milestone: delete the entire .tl-item block.
+
+    Add items in reverse chronological order (newest at top).
+  ============================================================ -->
+  <section id="timeline">
+    <div class="section-cmd reveal">
+      <div class="cmd-line">
+        <span class="cmd-prompt">~$</span>
+        <span class="cmd-text">./timeline --all</span>
+      </div>
+      <div class="cmd-comment"># career trajectory & interview journey</div>
+    </div>
+
+    <div class="tl-layout">
+
+      <!-- ---- LEFT COLUMN: CAREER & EDUCATION ---- -->
+      <div>
+        <div class="tl-column-label reveal">career &amp; education</div>
+        <div class="timeline">
+
+          <!-- CURRENT POSITION — use class="tl-dot active" -->
+          <div class="tl-item reveal">
+            <div class="tl-dot active"></div>
+            <div class="tl-year">2024 — present</div>
+            <div class="tl-role">MS Cybersecurity Engineering</div>
+            <div class="tl-org">Your University</div>
+            <div class="tl-desc">Graduate coursework, security research, and hands-on lab projects.</div>
+          </div>
+
+          <!-- PAST ROLE — copy this block for each job/internship -->
+          <div class="tl-item reveal">
+            <div class="tl-dot"></div>
+            <div class="tl-year">Summer 2024</div>
+            <div class="tl-role">Security Intern</div>
+            <div class="tl-org">Company Name</div>
+            <div class="tl-desc">Brief description of what you did and what you learned.</div>
+          </div>
+
+          <!-- EDUCATION MILESTONE -->
+          <div class="tl-item reveal">
+            <div class="tl-dot"></div>
+            <div class="tl-year">2020 — 2024</div>
+            <div class="tl-role">Bachelor's Degree</div>
+            <div class="tl-org">Your Undergraduate University</div>
+            <div class="tl-desc">Major, relevant coursework, GPA (optional).</div>
+          </div>
+
+          <!-- Add more milestones above this comment -->
+
+        </div><!-- end .timeline (left) -->
+      </div>
+
+      <!-- ---- RIGHT COLUMN: INTERVIEW JOURNEY ---- -->
+      <!-- Each item here represents a notable interview process or milestone.
+           This is a high-level summary — full details go in the interviews table below.
+           Keep descriptions short and focused on the experience/lesson. -->
+      <div>
+        <div class="tl-column-label reveal">interview journey</div>
+        <div class="timeline">
+
+          <div class="tl-item reveal">
+            <div class="tl-dot active"></div>
+            <div class="tl-year">2025</div>
+            <div class="tl-role">Final Round — Offer Received</div>
+            <div class="tl-org">Company / Role Name</div>
+            <div class="tl-desc">Describe what made this interview stand out. What did you learn?</div>
+          </div>
+
+          <div class="tl-item reveal">
+            <div class="tl-dot"></div>
+            <div class="tl-year">2024</div>
+            <div class="tl-role">Multiple Final Rounds</div>
+            <div class="tl-org">Various companies</div>
+            <div class="tl-desc">Sharpened threat modeling and live coding under pressure across 3 final rounds.</div>
+          </div>
+
+          <div class="tl-item reveal">
+            <div class="tl-dot"></div>
+            <div class="tl-year">2023</div>
+            <div class="tl-role">First Technical Interviews</div>
+            <div class="tl-org">Entry level roles</div>
+            <div class="tl-desc">First exposure to behavioral + technical screening. Learned to structure answers with STAR method.</div>
+          </div>
+
+          <!-- Add more interview milestones here -->
+
+        </div><!-- end .timeline (right) -->
+      </div>
+
+    </div><!-- end .tl-layout -->
+  </section>
+
+
+  <!-- ============================================================
+    SECTION 4: PROJECTS
+    id="projects" — linked from navbar
+
+    Each project = one <a class="proj-card"> block.
+    The whole card is a clickable link to the project.
+
+    To ADD a project:
+      1. Copy one .proj-card block
+      2. Update href to the GitHub repo or live demo URL
+      3. Update .proj-name, .proj-desc, and the .proj-tag pills
+
+    To REMOVE a project: delete the entire .proj-card block.
+
+    Tip: Lead with your most impressive project first.
+    Aim for 4–6 projects total.
+  ============================================================ -->
+  <section id="projects">
+    <div class="section-cmd reveal">
+      <div class="cmd-line">
+        <span class="cmd-prompt">~$</span>
+        <span class="cmd-text">ls -la ./projects</span>
+      </div>
+      <div class="cmd-comment"># click any project to view source on GitHub</div>
+    </div>
+
+    <div class="projects-grid">
+
+      <!-- PROJECT CARD — duplicate this block for each project -->
+      <a href="https://github.com/YOUR_USERNAME/project-1" target="_blank" class="proj-card reveal">
+        <div class="proj-header">
+          <span class="proj-name">Network Scanner Tool</span>
+          <span class="proj-arrow">↗</span>
+        </div>
+        <p class="proj-desc">
+          Custom port scanner with service fingerprinting and automated CVE
+          lookup against the NVD database.
+        </p>
+        <!-- Stack tags — add/remove <span class="proj-tag"> as needed -->
+        <div class="proj-tags">
+          <span class="proj-tag">Python</span>
+          <span class="proj-tag">Scapy</span>
+          <span class="proj-tag">NVD API</span>
+        </div>
+      </a>
+
+      <a href="https://github.com/YOUR_USERNAME/project-2" target="_blank" class="proj-card reveal">
+        <div class="proj-header">
+          <span class="proj-name">Malware Analysis Lab</span>
+          <span class="proj-arrow">↗</span>
+        </div>
+        <p class="proj-desc">
+          Isolated VM sandbox for dynamic and static malware analysis with
+          automated YARA rule generation.
+        </p>
+        <div class="proj-tags">
+          <span class="proj-tag">YARA</span>
+          <span class="proj-tag">Cuckoo</span>
+          <span class="proj-tag">Linux</span>
+          <span class="proj-tag">Python</span>
+        </div>
+      </a>
+
+      <a href="https://github.com/YOUR_USERNAME/project-3" target="_blank" class="proj-card reveal">
+        <div class="proj-header">
+          <span class="proj-name">Home Lab SIEM</span>
+          <span class="proj-arrow">↗</span>
+        </div>
+        <p class="proj-desc">
+          Log aggregation and threat detection pipeline using ELK Stack with
+          custom Sigma detection rules.
+        </p>
+        <div class="proj-tags">
+          <span class="proj-tag">ELK Stack</span>
+          <span class="proj-tag">Sigma</span>
+          <span class="proj-tag">Docker</span>
+        </div>
+      </a>
+
+      <!-- ADD YOUR REAL PROJECTS ABOVE THIS LINE -->
+      <!-- Copy the <a class="proj-card"> block above for each new project -->
+
+    </div><!-- end .projects-grid -->
+  </section>
+
+
+  <!-- ============================================================
+    SECTION 5: ACHIEVEMENTS
+    id="achievements" — linked from navbar
+
+    Showcase awards, certifications, competition placements,
+    publications, recognitions, scholarships, etc.
+
+    Each achievement = one <div class="achievement-item"> block.
+
+    To ADD an achievement:
+      1. Copy one .achievement-item block
+      2. Update .ach-icon (emoji), .ach-badge (type + color class),
+         .ach-title, .ach-meta (date/org), and .ach-desc
+
+    Badge color classes:
+      .badge-gold   → awards, scholarships, honors
+      .badge-blue   → certifications, courses completed
+      .badge-green  → CTF/competition placements
+      .badge-purple → publications, research, talks
+
+    To REMOVE an achievement: delete the entire .achievement-item block.
+  ============================================================ -->
+  <section id="achievements">
+    <div class="section-cmd reveal">
+      <div class="cmd-line">
+        <span class="cmd-prompt">~$</span>
+        <span class="cmd-text">cat achievements.log</span>
+      </div>
+      <div class="cmd-comment"># awards, certifications, recognitions, and milestones</div>
+    </div>
+
+    <div class="achievements-grid">
+
+      <!-- ACHIEVEMENT CARD — duplicate this block for each achievement -->
+
+      <!-- Example: CTF Competition placement -->
+      <div class="achievement-item reveal">
+        <div class="ach-top">
+          <span class="ach-icon">🏆</span>
+          <!-- Badge type: .badge-gold / .badge-blue / .badge-green / .badge-purple -->
+          <span class="ach-badge badge-green">Competition</span>
+        </div>
+        <div class="ach-title">Top 5% — HackTheBox CTF</div>
+        <div class="ach-meta">2024 · HackTheBox</div>
+        <div class="ach-desc">Placed in the top 5% globally in the annual HTB CTF, focusing on web exploitation and binary challenges.</div>
+      </div>
+
+      <!-- Example: Certification -->
+      <div class="achievement-item reveal">
+        <div class="ach-top">
+          <span class="ach-icon">📜</span>
+          <span class="ach-badge badge-blue">Certification</span>
+        </div>
+        <div class="ach-title">CompTIA Security+</div>
+        <div class="ach-meta">2023 · CompTIA</div>
+        <div class="ach-desc">Validated foundational cybersecurity knowledge covering network security, compliance, and threat management.</div>
+      </div>
+
+      <!-- Example: Academic award -->
+      <div class="achievement-item reveal">
+        <div class="ach-top">
+          <span class="ach-icon">🎓</span>
+          <span class="ach-badge badge-gold">Award</span>
+        </div>
+        <div class="ach-title">Dean's List — 3 Semesters</div>
+        <div class="ach-meta">2022–2024 · Your University</div>
+        <div class="ach-desc">Recognized for academic excellence with a GPA above 3.7 across three consecutive semesters.</div>
+      </div>
+
+      <!-- Example: Research / Publication -->
+      <div class="achievement-item reveal">
+        <div class="ach-top">
+          <span class="ach-icon">📄</span>
+          <span class="ach-badge badge-purple">Research</span>
+        </div>
+        <div class="ach-title">Research Paper Title Here</div>
+        <div class="ach-meta">2024 · Conference / Journal Name</div>
+        <div class="ach-desc">Brief description of what the paper was about and where it was published or presented.</div>
+      </div>
+
+      <!-- ADD YOUR REAL ACHIEVEMENTS ABOVE THIS LINE -->
+      <!-- Copy the block above and update for each new achievement -->
+
+    </div><!-- end .achievements-grid -->
+  </section>
+
+
+  <!-- ============================================================
+    SECTION 6: INTERVIEW LOG
+    id="interviews" — linked from navbar
+
+    A detailed table of your interview experiences.
+    Each row = one interview process.
+
+    To ADD an interview:
+      1. Copy one <tr> + optional <tr class="takeaway-row"> pair
+      2. Update all <td> fields
+      3. Outcome options:
+           <span class="status offer">Offer</span>
+           <span class="status no-offer">No Offer</span>
+           <span class="status pending">In Progress</span>
+           <span class="status withdrew">Withdrew</span>
+
+    The takeaway row is optional. Delete it if you don't want
+    to show a lesson for that particular interview.
+
+    Company names: use real names or anonymize e.g. "Tier 1 Bank".
+  ============================================================ -->
+  <section id="interviews">
+    <div class="section-cmd reveal">
+      <div class="cmd-line">
+        <span class="cmd-prompt">~$</span>
+        <span class="cmd-text">cat interviews.log</span>
+      </div>
+      <div class="cmd-comment"># documented interview experiences — the unfiltered journey</div>
+    </div>
+
+    <div class="interview-table-wrap reveal">
+      <table class="interview-table">
+        <thead>
+          <tr>
+            <!-- Column headers — rename if you prefer different labels -->
+            <th>Company</th>
+            <th>Role</th>
+            <th>Stage Reached</th>
+            <th>Topics Covered</th>
+            <th>Outcome</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <!-- INTERVIEW ROW — copy this block (including takeaway) for each interview -->
+          <tr>
+            <td class="td-company">Fortune 500 Fintech</td>
+            <td>Security Analyst Intern</td>
+            <td>Final Round (4/4)</td>
+            <td>Threat modeling, network protocols, Python scripting</td>
+            <td><span class="status no-offer">No Offer</span></td>
+          </tr>
+          <!-- TAKEAWAY ROW — optional, delete if not needed -->
+          <tr class="takeaway-row">
+            <td colspan="5">Learned I needed to sharpen live coding under time pressure. Brushed up on Scapy and socket programming afterward.</td>
+          </tr>
+
+          <!-- INTERVIEW ROW 2 -->
+          <tr>
+            <td class="td-company">Defense Contractor</td>
+            <td>Penetration Tester Intern</td>
+            <td>Round 2 (2/3)</td>
+            <td>Enumeration techniques, report writing, OSINT</td>
+            <td><span class="status no-offer">No Offer</span></td>
+          </tr>
+          <tr class="takeaway-row">
+            <td colspan="5">Reporting and documentation skills matter just as much as technical skills. Practiced writing professional pentest reports.</td>
+          </tr>
+
+          <!-- INTERVIEW ROW 3 -->
+          <tr>
+            <td class="td-company">Series B SaaS Startup</td>
+            <td>AppSec Engineer</td>
+            <td>Final Round (3/3)</td>
+            <td>OWASP Top 10, code review, SDLC security</td>
+            <td><span class="status offer">Offer</span></td>
+          </tr>
+          <tr class="takeaway-row">
+            <td colspan="5">Being able to explain vulnerability impact to non-technical stakeholders was the differentiator in the final round.</td>
+          </tr>
+
+          <!-- INTERVIEW ROW 4 -->
+          <tr>
+            <td class="td-company">Company Name Here</td>
+            <td>Role Title Here</td>
+            <td>Stage Reached</td>
+            <td>Topics you were asked about</td>
+            <td><span class="status pending">In Progress</span></td>
+          </tr>
+          <!-- No takeaway needed while interview is in progress — delete takeaway row -->
+
+          <!-- ADD MORE INTERVIEW ROWS ABOVE THIS LINE -->
+
+        </tbody>
+      </table>
+    </div><!-- end .interview-table-wrap -->
+  </section>
+
+
+  <!-- ============================================================
+    SECTION 7: CONTACT
+    id="contact" — linked from navbar
+
+    To update contact links:
+      - Replace href values with your actual profile URLs
+      - Update the link label text
+      - To ADD a link: copy one <a class="contact-chip"> block
+      - To REMOVE a link: delete the <a> block
+
+    Update the tagline text inside .contact-tagline.
+  ============================================================ -->
+  <section id="contact">
+    <div class="section-cmd reveal">
+      <div class="cmd-line">
+        <span class="cmd-prompt">~$</span>
+        <span class="cmd-text">contact --help</span>
+      </div>
+      <div class="cmd-comment"># let's connect</div>
+    </div>
+
+    <!-- Update this tagline with your own words -->
+    <p class="contact-tagline reveal">
+      Always open to discussing cybersecurity, collaborating on research,
+      or exploring new opportunities. Reach out on any platform below.
+    </p>
+
+    <div class="contact-links reveal">
+      <!-- Update each href with your actual profile URL -->
+      <a href="https://linkedin.com/in/hemantsherawat" target="_blank" class="contact-chip">→ LinkedIn</a>
+      <a href="https://github.com/YOUR_USERNAME" target="_blank" class="contact-chip">→ GitHub</a>
+      <a href="mailto:your@email.com" class="contact-chip">→ Email</a>
+      <a href="https://app.hackthebox.com/profile/YOUR_ID" target="_blank" class="contact-chip">→ HackTheBox</a>
+      <a href="https://tryhackme.com/p/YOUR_USERNAME" target="_blank" class="contact-chip">→ TryHackMe</a>
+      <a href="/resume.pdf" download class="contact-chip">→ Resume PDF</a>
+      <!-- Add more contact links here if needed -->
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+    FOOTER
+    Update the name and year. The year auto-updates via JS below.
+  ============================================================ -->
+  <footer>
+    <span id="footer-text"></span>
+  </footer>
+
+
+  <!-- ============================================================
+    JAVASCRIPT
+    Two things happen here:
+      1. Scroll reveal — sections animate in as you scroll
+      2. Footer year — auto-updates so you never have a stale year
+
+    No changes needed unless you want to tweak animation timing.
+    To disable scroll animations: remove the IntersectionObserver
+    block and add class="visible" to all .reveal elements in HTML.
+  ============================================================ -->
+  <script>
+    // --- SCROLL REVEAL ---
+    // Watches for .reveal elements entering the viewport and
+    // adds .visible to trigger the CSS fade+slide animation.
+    // threshold: 0.1 means 10% of the element must be visible to trigger.
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target); // animate once only
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // --- FOOTER YEAR ---
+    // Automatically shows the current year so you never need to update it.
+    document.getElementById('footer-text').textContent =
+      `© ${new Date().getFullYear()} Hemant Sherawat · hemantsherawat.com`;
+      // ^ Update "Hemant Sherawat" and "hemantsherawat.com" to match your info
+  </script>
+
+</body>
+</html>
