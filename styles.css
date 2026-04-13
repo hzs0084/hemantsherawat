@@ -484,6 +484,7 @@ section:last-of-type { border-bottom: none; }
   text-transform: uppercase;
 }
 .badge-gold   { color: #c8960c; background: #1f1800; border: 0.5px solid #3d2e00; }
+.badge-red   { color: #c80f0c; background: #1f1800; border: 0.5px solid #3d2e00; }
 .badge-blue   { color: #4da6ff; background: #071020; border: 0.5px solid #0d2440; }
 .badge-green  { color: var(--accent); background: var(--bg-accent-faint); border: 0.5px solid var(--border-accent); }
 .badge-purple { color: #b388ff; background: #0f0820; border: 0.5px solid #2a1860; }
