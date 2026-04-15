@@ -391,8 +391,8 @@ section:last-of-type { border-bottom: none; }
 }
 .tl-dot.active    { background: var(--accent); }
 .tl-year          { font-size: 10px; color: var(--text-dim);  margin-bottom: 3px; }
-.tl-role          { font-size: 13px; color: #ddd; font-weight: 500; margin-bottom: 2px; }
-.tl-org           { font-size: 11px; color: var(--accent-dim); margin-bottom: 4px; }
+.tl-org          { font-size: 13px; color: #ddd; font-weight: 500; margin-bottom: 2px; }
+.tl-role           { font-size: 11px; color: var(--accent-dim); margin-bottom: 4px; }
 .tl-desc          { font-size: 11px; color: var(--text-muted); line-height: 1.6; }
 
 
