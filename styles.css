@@ -391,8 +391,8 @@ section:last-of-type { border-bottom: none; }
 }
 .tl-dot.active    { background: var(--accent); }
 .tl-year          { font-size: 10px; color: var(--text-dim);  margin-bottom: 3px; }
-.tl-org          { font-size: 13px; color: #ddd; font-weight: 500; margin-bottom: 2px; }
-.tl-role           { font-size: 11px; color: var(--accent-dim); margin-bottom: 4px; }
+.tl-role          { font-size: 13px; color: #ddd; font-weight: 500; margin-bottom: 2px; }
+.tl-org           { font-size: 11px; color: var(--accent-dim); margin-bottom: 4px; }
 .tl-desc          { font-size: 11px; color: var(--text-muted); line-height: 1.6; }
 
 
@@ -484,13 +484,27 @@ section:last-of-type { border-bottom: none; }
   text-transform: uppercase;
 }
 .badge-gold   { color: #c8960c; background: #1f1800; border: 0.5px solid #3d2e00; }
-.badge-red   { color: #c80f0c; background: #1f1800; border: 0.5px solid #3d2e00; }
 .badge-blue   { color: #4da6ff; background: #071020; border: 0.5px solid #0d2440; }
 .badge-green  { color: var(--accent); background: var(--bg-accent-faint); border: 0.5px solid var(--border-accent); }
 .badge-purple { color: #b388ff; background: #0f0820; border: 0.5px solid #2a1860; }
 .ach-title  { font-size: 13px; color: #ddd; font-weight: 500; }
 .ach-meta   { font-size: 10px; color: var(--text-dim); }
 .ach-desc   { font-size: 11px; color: var(--text-muted); line-height: 1.6; }
+
+/* Achievement title links — inherit the card's text color so they
+   don't stand out as browser-default hyperlinks. Subtle green hover
+   is the only indicator they're clickable. No underline, no blue.
+   Applies to any <a> wrapped inside .ach-title. */
+.ach-title a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.ach-title a:hover { color: var(--accent); }
+
+/* badge-red — for learning platforms or any custom category.
+   To add more badge colors, copy this pattern and change the class name. */
+.badge-red { color: #ff6b6b; background: #1a0808; border: 0.5px solid #3d1414; }
 
 
 /* ----------------------------------------------------------------
