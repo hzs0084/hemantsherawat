@@ -203,18 +203,42 @@ section:last-of-type { border-bottom: none; }
 ---------------------------------------------------------------- */
 #whoami { padding-top: 80px; }
 
-/* 7a. ASCII Art banner
-   Generate your own at: https://patorjk.com/software/taag/
-   Recommended fonts: ANSI Shadow, Big, Banner3
-   Paste the output into <pre class="ascii-art"> in index.html. */
-.ascii-art {
-  font-size: 9px;
-  line-height: 1.15;
-  color: #1a3d2b;
-  white-space: pre;
-  overflow-x: auto;
-  margin-bottom: 28px;
-  letter-spacing: 0;
+/* 7a. GLITCH CYCLER
+   Cycles through phrases with a scramble → resolve → hold → scramble out loop.
+
+   TO SWITCH BETWEEN SCRAMBLE STYLES:
+     Set GLITCH_CHARSET in main.js to 'hacker' or 'alpha'.
+
+   TO ADJUST SIZE:
+     Change font-size clamp values: (min, fluid, max).
+     Current: scales from 18px on mobile up to 28px on wide screens.
+
+   TO CHANGE COLOR:
+     .glitch-cycler-text  → the phrase text color
+     .glitch-cycler-cursor → the blinking | cursor color
+---------------------------------------------------------------- */
+.glitch-cycler {
+  font-size: clamp(14px, 2.2vw, 22px);
+  font-weight: 400;
+  color: var(--accent-dim);
+  letter-spacing: 0.03em;
+  margin-bottom: 40px;
+  min-height: 1.6em; /* prevents layout shift as phrases change length */
+  display: flex;
+  align-items: center;
+}
+
+/* The phrase text — colored by JS during scramble vs resolved states */
+.glitch-cycler-text { color: var(--accent-dim); }
+
+/* Scramble state — chars are bright green while randomizing */
+.glitch-cycler-text.scrambling { color: var(--accent); }
+
+/* Blinking cursor — reuses the blink keyframe from section 4 */
+.glitch-cycler-cursor {
+  color: var(--accent);
+  animation: blink 1s step-end infinite;
+  margin-left: 2px;
 }
 
 /* 7b. Name, Title, Description
@@ -679,5 +703,5 @@ footer {
   section                    { padding: 48px 20px; }
   .tl-layout                 { grid-template-columns: 1fr; }
   .hero-name                 { font-size: 22px; }
-  .ascii-art                 { font-size: 7px; }
+  /* Glitch name scales via clamp() — no override needed on mobile */
 }
